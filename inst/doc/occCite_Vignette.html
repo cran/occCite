@@ -17,17 +17,105 @@
 <meta name="author" content="Vijay Barve" />
 <meta name="author" content="Robert Guralnick" />
 
-<meta name="date" content="2020-10-01" />
+<meta name="date" content="2020-10-21" />
 
 <title>An overview of executing searches and generating citations using occCite</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+  code.sourceCode > span { color: inherit; text-decoration: inherit; }
+  code.sourceCode > span:empty { height: 1.2em; }
+  .sourceCode { overflow: visible; }
+  code.sourceCode { white-space: pre; position: relative; }
+  div.sourceCode { margin: 1em 0; }
+  pre.sourceCode { margin: 0; }
+  @media screen {
+  div.sourceCode { overflow: auto; }
+  }
+  @media print {
+  code.sourceCode { white-space: pre-wrap; }
+  code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+  }
+  pre.numberSource code
+    { counter-reset: source-line 0; }
+  pre.numberSource code > span
+    { position: relative; left: -4em; counter-increment: source-line; }
+  pre.numberSource code > span > a:first-child::before
+    { content: counter(source-line);
+      position: relative; left: -1em; text-align: right; vertical-align: baseline;
+      border: none; display: inline-block;
+      -webkit-touch-callout: none; -webkit-user-select: none;
+      -khtml-user-select: none; -moz-user-select: none;
+      -ms-user-select: none; user-select: none;
+      padding: 0 4px; width: 4em;
+      color: #aaaaaa;
+    }
+  pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+  div.sourceCode
+    {   }
+  @media screen {
+  code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+  }
+  code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+  code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+  code span.at { color: #7d9029; } /* Attribute */
+  code span.bn { color: #40a070; } /* BaseN */
+  code span.bu { } /* BuiltIn */
+  code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+  code span.ch { color: #4070a0; } /* Char */
+  code span.cn { color: #880000; } /* Constant */
+  code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+  code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+  code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+  code span.dt { color: #902000; } /* DataType */
+  code span.dv { color: #40a070; } /* DecVal */
+  code span.er { color: #ff0000; font-weight: bold; } /* Error */
+  code span.ex { } /* Extension */
+  code span.fl { color: #40a070; } /* Float */
+  code span.fu { color: #06287e; } /* Function */
+  code span.im { } /* Import */
+  code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+  code span.op { color: #666666; } /* Operator */
+  code span.ot { color: #007020; } /* Other */
+  code span.pp { color: #bc7a00; } /* Preprocessor */
+  code span.sc { color: #4070a0; } /* SpecialChar */
+  code span.ss { color: #bb6688; } /* SpecialString */
+  code span.st { color: #4070a0; } /* String */
+  code span.va { color: #19177c; } /* Variable */
+  code span.vs { color: #4070a0; } /* VerbatimString */
+  code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -37,14 +125,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -53,9 +143,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -311,7 +401,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h4 class="author">Jamie M. Kass</h4>
 <h4 class="author">Vijay Barve</h4>
 <h4 class="author">Robert Guralnick</h4>
-<h4 class="date">2020-10-01</h4>
+<h4 class="date">2020-10-21</h4>
 
 
 <div id="TOC">
@@ -340,27 +430,27 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="setup" class="section level1">
 <h1>Setup</h1>
 <p>If you plan to query GBIF, you will need to provide them with your user login information. We have provided a dummy login below to show you the format. <em>You will need to provide actual account information.</em> This is because you will actually be downloading <em>all</em> of the records available for the species using <code>occ_download()</code>, instead of getting results from <code>occ_search()</code>, which has a hard limit of 200,000 occurrences.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(occCite);</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#Creating a GBIF login</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">GBIFLogin &lt;-<span class="st"> </span><span class="kw">GBIFLoginManager</span>(<span class="dt">user =</span> <span class="st">&quot;occCiteTester&quot;</span>,</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">                              <span class="dt">email =</span> <span class="st">&quot;****@yahoo.com&quot;</span>,</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">                              <span class="dt">pwd =</span> <span class="st">&quot;12345&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(occCite);</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#Creating a GBIF login</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>GBIFLogin &lt;-<span class="st"> </span><span class="kw">GBIFLoginManager</span>(<span class="dt">user =</span> <span class="st">&quot;occCiteTester&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>                              <span class="dt">email =</span> <span class="st">&quot;****@yahoo.com&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                              <span class="dt">pwd =</span> <span class="st">&quot;12345&quot;</span>)</span></code></pre></div>
 </div>
 <div id="performing-a-simple-search" class="section level1">
 <h1>Performing a simple search</h1>
 <div id="the-basics" class="section level2">
 <h2>The basics</h2>
 <p>At its simplest, <code>occCite</code> allows you to search for occurrences for a single species. The taxonomy of the user-specified species will be verified using EOL and NCBI taxonomies by default.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Simple search</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">mySimpleOccCiteObject &lt;-<span class="st"> </span><span class="kw">occQuery</span>(<span class="dt">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>,</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">                                  <span class="dt">datasources =</span> <span class="kw">c</span>(<span class="st">&quot;gbif&quot;</span>, <span class="st">&quot;bien&quot;</span>),</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                                  <span class="dt">GBIFLogin =</span> GBIFLogin, </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">                                  <span class="dt">GBIFDownloadDirectory =</span> </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                                    <span class="kw">paste0</span>(<span class="kw">path.package</span>(<span class="st">&quot;occCite&quot;</span>), <span class="st">&quot;/extdata/&quot;</span>),</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">                                  <span class="dt">checkPreviousGBIFDownload =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Simple search</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>mySimpleOccCiteObject &lt;-<span class="st"> </span><span class="kw">occQuery</span>(<span class="dt">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>                                  <span class="dt">datasources =</span> <span class="kw">c</span>(<span class="st">&quot;gbif&quot;</span>, <span class="st">&quot;bien&quot;</span>),</span>
+<span id="cb2-4"><a href="#cb2-4"></a>                                  <span class="dt">GBIFLogin =</span> GBIFLogin, </span>
+<span id="cb2-5"><a href="#cb2-5"></a>                                  <span class="dt">GBIFDownloadDirectory =</span> </span>
+<span id="cb2-6"><a href="#cb2-6"></a>                                    <span class="kw">paste0</span>(<span class="kw">path.package</span>(<span class="st">&quot;occCite&quot;</span>), <span class="st">&quot;/extdata/&quot;</span>),</span>
+<span id="cb2-7"><a href="#cb2-7"></a>                                  <span class="dt">checkPreviousGBIFDownload =</span> T)</span></code></pre></div>
 <p>Here is what the GBIF results look like:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># GBIF search results</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">head</span>(mySimpleOccCiteObject<span class="op">@</span>occResults<span class="op">$</span><span class="st">`</span><span class="dt">Protea cynaroides</span><span class="st">`</span><span class="op">$</span>GBIF<span class="op">$</span>OccurrenceTable)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># GBIF search results</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">head</span>(mySimpleOccCiteObject<span class="op">@</span>occResults<span class="op">$</span><span class="st">`</span><span class="dt">Protea cynaroides</span><span class="st">`</span><span class="op">$</span>GBIF<span class="op">$</span>OccurrenceTable)</span></code></pre></div>
 <pre><code>##                name longitude  latitude day month year
 ## 1 Protea cynaroides  18.40540 -33.95891   4     1 2015
 ## 2 Protea cynaroides  18.42350 -33.96619  20     6 2019
@@ -383,8 +473,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 5        GBIF
 ## 6        GBIF</code></pre>
 <p>And here are the BIEN results:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#BIEN search results</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">head</span>(mySimpleOccCiteObject<span class="op">@</span>occResults<span class="op">$</span><span class="st">`</span><span class="dt">Protea cynaroides</span><span class="st">`</span><span class="op">$</span>BIEN<span class="op">$</span>OccurrenceTable)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#BIEN search results</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">head</span>(mySimpleOccCiteObject<span class="op">@</span>occResults<span class="op">$</span><span class="st">`</span><span class="dt">Protea cynaroides</span><span class="st">`</span><span class="op">$</span>BIEN<span class="op">$</span>OccurrenceTable)</span></code></pre></div>
 <pre><code>##                name longitude latitude day month year Dataset DatasetKey
 ## 1 Protea cynaroides    22.875  -33.875  20     8 1973   SANBI       2249
 ## 2 Protea cynaroides    25.125  -33.875   3     7 1934   SANBI       2249
@@ -400,41 +490,61 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 5        BIEN
 ## 6        BIEN</code></pre>
 <p>There is also a summary method for <code>occCite</code> objects with some basic information about your search.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">summary</span>(mySimpleOccCiteObject)</a></code></pre></div>
-<pre><code>##      Length       Class        Mode 
-##           1 occCiteData          S4</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">summary</span>(mySimpleOccCiteObject)</span></code></pre></div>
+<pre><code>##  
+##  OccCite query occurred on: 21 August, 2020
+##  
+##  User query type: User-supplied list of taxa.
+##  
+##  Sources for taxonomic rectification: NCBI
+##      
+##  
+##  Taxonomic cleaning results:     
+## 
+##          Input Name        Best Match Taxonomic Databases w/ Matches
+## 1 Protea cynaroides Protea cynaroides                           NCBI
+##  
+##  Sources for occurrence data: gbif, bien
+##      
+##             Species Occurrences Sources
+## 1 Protea cynaroides         828      15
+##  
+##  GBIF dataset DOIs:  
+## 
+##             Species GBIF Access Date           GBIF DOI
+## 1 Protea cynaroides       2019-07-15 10.15468/dl.iqnra2</code></pre>
 </div>
 <div id="simple-citations" class="section level2">
 <h2>Simple citations</h2>
 <p>After doing a search for occurrence points, you can use <code>occCitation()</code> to generate citations for primary biodiversity databases, as well as database aggregators. <strong>Note:</strong> Currently, GBIF and BIEN are the only aggregators for which citations are supported.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">#Get citations</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">mySimpleOccCitations &lt;-<span class="st"> </span><span class="kw">occCitation</span>(mySimpleOccCiteObject)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#Get citations</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>mySimpleOccCitations &lt;-<span class="st"> </span><span class="kw">occCitation</span>(mySimpleOccCiteObject)</span></code></pre></div>
 <p>Here is a simple way of generating a formatted citation document from the results of <code>occCitation()</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">print</span>(mySimpleOccCitations)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">print</span>(mySimpleOccCitations)</span></code></pre></div>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'</code></pre>
-<pre><code>## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## &#39;occCite&#39;</code></pre>
+<pre><code>## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)</code></pre>
 <pre><code>## Writing 4 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.
 ## Please use `as_tibble()` instead.
 ## The signature and semantics have changed, see `?as_tibble`.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<pre><code>## Cameron E, Auckland Museum A M (2020). Auckland Museum Botany Collection. Version 1.52. Auckland War Memorial Museum. https://doi.org/10.15468/mnjkvv. Accessed via GBIF on 2019-07-15.
+<pre><code>## Cameron E, Auckland Museum A M (2020). Auckland Museum Botany Collection. Version 1.53. Auckland War Memorial Museum. https://doi.org/10.15468/mnjkvv. Accessed via GBIF on 2019-07-15.
 ## Capers R (2014). CONN. University of Connecticut. https://doi.org/10.15468/w35jmd. Accessed via GBIF on 2019-07-15.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
 ## Fatima Parker-Allie, Ranwashe F (2018). PRECIS. South African National Biodiversity Institute. https://doi.org/10.15468/rckmn2. Accessed via GBIF on 2019-07-15.
-## MNHN, Chagnoux S (2020). The vascular plants collection (P) at the Herbarium of the Muséum national d'Histoire Naturelle (MNHN - Paris). Version 69.183. MNHN - Museum national d'Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2019-07-15.
+## MNHN, Chagnoux S (2020). The vascular plants collection (P) at the Herbarium of the Muséum national d&#39;Histoire Naturelle (MNHN - Paris). Version 69.186. MNHN - Museum national d&#39;Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2019-07-15.
 ## MNHN. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
 ## Magill B, Solomon J, Stimmel H (2020). Tropicos Specimen Data. Missouri Botanical Garden. https://doi.org/10.15468/hja69f. Accessed via GBIF on 2019-07-15.
 ## Maitner, B. (2020). BIEN: Tools for Accessing the Botanical Information and Ecology. R package version 1.2.4. https://CRAN.R-project.org/package=BIEN.
 ## Missouri Botanical Garden,Herbarium. Accessed via BIEN on NA.
 ## NSW. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 ## Ranwashe F (2019). BODATSA: Botanical Collections. Version 1.4. South African National Biodiversity Institute. https://doi.org/10.15468/2aki0q. Accessed via GBIF on 2019-07-15.
 ## SANBI. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
 ## Senckenberg (2020). African Plants - a photo guide. https://doi.org/10.15468/r9azth. Accessed via GBIF on 2019-07-15.
@@ -447,10 +557,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Simple Taxonomic Rectification</h2>
 <p>In the simplest of searches, such as the one above, the taxonomy of your input species name is automatically rectified through the <code>occCite</code> function <code>studyTaxonList()</code> using <code>gnr_resolve()</code> from the <code>taxize</code> <code>R</code> package. If you would like to change the source of the taxonomy being used to rectify your species names, you can specify as many taxonomic repositories as you like from the Global Names Index (GNI). The complete list of GNI repositories can be found <a href="http://gni.globalnames.org/data_sources">here</a>.</p>
 <p><code>studyTaxonList()</code> chooses the taxonomic names closest to those being input and documents which taxonomic repositories agreed with those names. <code>studyTaxonList()</code> instantiates an <code>occCiteData</code> object the same way <code>occQuery()</code> does. This object can be passed into <code>occQuery()</code> to perform your occurrence data search.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co">#Rectify taxonomy</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">myTROccCiteObject &lt;-<span class="st"> </span><span class="kw">studyTaxonList</span>(<span class="dt">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>, </a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">                                  <span class="dt">datasources =</span> <span class="kw">c</span>(<span class="st">&quot;NCBI&quot;</span>, <span class="st">&quot;EOL&quot;</span>, <span class="st">&quot;ITIS&quot;</span>))</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">myTROccCiteObject<span class="op">@</span>cleanedTaxonomy</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#Rectify taxonomy</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>myTROccCiteObject &lt;-<span class="st"> </span><span class="kw">studyTaxonList</span>(<span class="dt">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>, </span>
+<span id="cb17-3"><a href="#cb17-3"></a>                                  <span class="dt">datasources =</span> <span class="kw">c</span>(<span class="st">&quot;NCBI&quot;</span>, <span class="st">&quot;EOL&quot;</span>, <span class="st">&quot;ITIS&quot;</span>))</span>
+<span id="cb17-4"><a href="#cb17-4"></a>myTROccCiteObject<span class="op">@</span>cleanedTaxonomy</span></code></pre></div>
 <pre><code>##          Input Name        Best Match Taxonomic Databases w/ Matches
 ## 1 Protea cynaroides Protea cynaroides                           NCBI</code></pre>
 <hr />
@@ -461,16 +571,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="loading-data-from-previous-gbif-searches" class="section level2">
 <h2>Loading data from previous GBIF searches</h2>
 <p>Querying GBIF can take quite a bit of time, especially for multiple species and/or well-known species. In this case, you may wish to access previously-downloaded data sets from your computer by specifying the general location of your downloaded <code>.zip</code> files. <code>occQuery</code> will crawl through your specified <code>GBIFDownloadDirectory</code> to collect all the <code>.zip</code> files contained in that folder and its subfolders. It will then import the most recent downloads that match your taxon list. These GBIF data will be appended to a BIEN search the same as if you do the simple real-time search (if you chose BIEN as well as GBIF), as was shown above. <code>checkPreviousGBIFDownload</code> is <code>TRUE</code> by default, but if <code>loadLocalGBIFDownload</code> is <code>TRUE</code>, <code>occQuery</code> will ignore <code>checkPreviousDownload</code>. It is also worth noting that <code>occCite</code> does not currently support mixed data download sources. That is, you cannot do GBIF queries for some taxa, download previously-prepared data sets for others, and load the rest from local data sets on your computer.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Simple load</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">myOldOccCiteObject &lt;-<span class="st"> </span><span class="kw">occQuery</span>(<span class="dt">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>, </a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">                                  <span class="dt">datasources =</span> <span class="kw">c</span>(<span class="st">&quot;gbif&quot;</span>, <span class="st">&quot;bien&quot;</span>), </a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">                                  <span class="dt">GBIFLogin =</span> <span class="ot">NULL</span>, </a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">                                  <span class="dt">GBIFDownloadDirectory =</span> <span class="kw">paste0</span>(<span class="kw">path.package</span>(<span class="st">&quot;occCite&quot;</span>), <span class="st">&quot;/extdata/&quot;</span>),</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6">                                  <span class="dt">loadLocalGBIFDownload =</span> T,</a>
-<a class="sourceLine" id="cb19-7" data-line-number="7">                                  <span class="dt">checkPreviousGBIFDownload =</span> F)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Simple load</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>myOldOccCiteObject &lt;-<span class="st"> </span><span class="kw">occQuery</span>(<span class="dt">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>, </span>
+<span id="cb19-3"><a href="#cb19-3"></a>                                  <span class="dt">datasources =</span> <span class="kw">c</span>(<span class="st">&quot;gbif&quot;</span>, <span class="st">&quot;bien&quot;</span>), </span>
+<span id="cb19-4"><a href="#cb19-4"></a>                                  <span class="dt">GBIFLogin =</span> <span class="ot">NULL</span>, </span>
+<span id="cb19-5"><a href="#cb19-5"></a>                                  <span class="dt">GBIFDownloadDirectory =</span> <span class="kw">paste0</span>(<span class="kw">path.package</span>(<span class="st">&quot;occCite&quot;</span>), <span class="st">&quot;/extdata/&quot;</span>),</span>
+<span id="cb19-6"><a href="#cb19-6"></a>                                  <span class="dt">loadLocalGBIFDownload =</span> T,</span>
+<span id="cb19-7"><a href="#cb19-7"></a>                                  <span class="dt">checkPreviousGBIFDownload =</span> F)</span></code></pre></div>
 <p>Here is the result. Look familiar?</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co">#GBIF search results</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">head</span>(myOldOccCiteObject<span class="op">@</span>occResults<span class="op">$</span><span class="st">`</span><span class="dt">Protea cynaroides</span><span class="st">`</span><span class="op">$</span>GBIF<span class="op">$</span>OccurrenceTable);</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#GBIF search results</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">head</span>(myOldOccCiteObject<span class="op">@</span>occResults<span class="op">$</span><span class="st">`</span><span class="dt">Protea cynaroides</span><span class="st">`</span><span class="op">$</span>GBIF<span class="op">$</span>OccurrenceTable);</span></code></pre></div>
 <pre><code>##                name longitude  latitude day month year
 ## 1 Protea cynaroides  18.40540 -33.95891   4     1 2015
 ## 2 Protea cynaroides  18.42350 -33.96619  20     6 2019
@@ -492,33 +602,53 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 4        GBIF
 ## 5        GBIF
 ## 6        GBIF</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co">#The full summary</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">summary</span>(myOldOccCiteObject)</a></code></pre></div>
-<pre><code>##      Length       Class        Mode 
-##           1 occCiteData          S4</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">#The full summary</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">summary</span>(myOldOccCiteObject)</span></code></pre></div>
+<pre><code>##  
+##  OccCite query occurred on: 21 October, 2020
+##  
+##  User query type: User-supplied list of taxa.
+##  
+##  Sources for taxonomic rectification: NCBI
+##      
+##  
+##  Taxonomic cleaning results:     
+## 
+##          Input Name        Best Match Taxonomic Databases w/ Matches
+## 1 Protea cynaroides Protea cynaroides                           NCBI
+##  
+##  Sources for occurrence data: gbif, bien
+##      
+##             Species Occurrences Sources
+## 1 Protea cynaroides         828      15
+##  
+##  GBIF dataset DOIs:  
+## 
+##             Species GBIF Access Date           GBIF DOI
+## 1 Protea cynaroides       2019-07-15 10.15468/dl.iqnra2</code></pre>
 <p>Getting citation data works the exact same way with previously-downloaded data as it does from a fresh data set.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co">#Get citations</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">myOldOccCitations &lt;-<span class="st"> </span><span class="kw">occCitation</span>(myOldOccCiteObject)</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw">print</span>(myOldOccCitations)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">#Get citations</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>myOldOccCitations &lt;-<span class="st"> </span><span class="kw">occCitation</span>(myOldOccCiteObject)</span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="kw">print</span>(myOldOccCitations)</span></code></pre></div>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'</code></pre>
-<pre><code>## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## &#39;occCite&#39;</code></pre>
+<pre><code>## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)</code></pre>
 <pre><code>## Writing 4 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
-<pre><code>## Cameron E, Auckland Museum A M (2020). Auckland Museum Botany Collection. Version 1.52. Auckland War Memorial Museum. https://doi.org/10.15468/mnjkvv. Accessed via GBIF on 2019-07-15.
+## Results written to file &#39;temp.bib&#39;</code></pre>
+<pre><code>## Cameron E, Auckland Museum A M (2020). Auckland Museum Botany Collection. Version 1.53. Auckland War Memorial Museum. https://doi.org/10.15468/mnjkvv. Accessed via GBIF on 2019-07-15.
 ## Capers R (2014). CONN. University of Connecticut. https://doi.org/10.15468/w35jmd. Accessed via GBIF on 2019-07-15.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
 ## Fatima Parker-Allie, Ranwashe F (2018). PRECIS. South African National Biodiversity Institute. https://doi.org/10.15468/rckmn2. Accessed via GBIF on 2019-07-15.
-## MNHN, Chagnoux S (2020). The vascular plants collection (P) at the Herbarium of the Muséum national d'Histoire Naturelle (MNHN - Paris). Version 69.183. MNHN - Museum national d'Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2019-07-15.
+## MNHN, Chagnoux S (2020). The vascular plants collection (P) at the Herbarium of the Muséum national d&#39;Histoire Naturelle (MNHN - Paris). Version 69.186. MNHN - Museum national d&#39;Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2019-07-15.
 ## MNHN. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
 ## Magill B, Solomon J, Stimmel H (2020). Tropicos Specimen Data. Missouri Botanical Garden. https://doi.org/10.15468/hja69f. Accessed via GBIF on 2019-07-15.
 ## Maitner, B. (2020). BIEN: Tools for Accessing the Botanical Information and Ecology. R package version 1.2.4. https://CRAN.R-project.org/package=BIEN.
 ## Missouri Botanical Garden,Herbarium. Accessed via BIEN on NA.
 ## NSW. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 ## Ranwashe F (2019). BODATSA: Botanical Collections. Version 1.4. South African National Biodiversity Institute. https://doi.org/10.15468/2aki0q. Accessed via GBIF on 2019-07-15.
 ## SANBI. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
 ## Senckenberg (2020). African Plants - a photo guide. https://doi.org/10.15468/r9azth. Accessed via GBIF on 2019-07-15.
@@ -536,43 +666,89 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="occcite-with-a-phylogeny" class="section level2">
 <h2>occCite with a Phylogeny</h2>
 <p>Here is an example of how such a search is structured, using an unpublished phylogeny of billfishes.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">library</span>(ape)</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="co">#Get tree</span></a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">treeFile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata/Fish_12Tax_time_calibrated.tre&quot;</span>, <span class="dt">package=</span><span class="st">'occCite'</span>)</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">phylogeny &lt;-<span class="st"> </span>ape<span class="op">::</span><span class="kw">read.nexus</span>(treeFile)</a>
-<a class="sourceLine" id="cb30-5" data-line-number="5">tree &lt;-<span class="st"> </span>ape<span class="op">::</span><span class="kw">extract.clade</span>(phylogeny, <span class="dv">18</span>)</a>
-<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="co">#Query databases for names</span></a>
-<a class="sourceLine" id="cb30-7" data-line-number="7">myPhyOccCiteObject &lt;-<span class="st"> </span><span class="kw">studyTaxonList</span>(<span class="dt">x =</span> tree, <span class="dt">datasources =</span> <span class="st">&quot;NCBI&quot;</span>)</a>
-<a class="sourceLine" id="cb30-8" data-line-number="8"><span class="co">#Query GBIF for occurrence data</span></a>
-<a class="sourceLine" id="cb30-9" data-line-number="9">myPhyOccCiteObject &lt;-<span class="st"> </span><span class="kw">occQuery</span>(<span class="dt">x =</span> myPhyOccCiteObject, </a>
-<a class="sourceLine" id="cb30-10" data-line-number="10">                            <span class="dt">datasources =</span> <span class="st">&quot;gbif&quot;</span>,</a>
-<a class="sourceLine" id="cb30-11" data-line-number="11">                            <span class="dt">GBIFDownloadDirectory =</span> <span class="kw">paste0</span>(<span class="kw">path.package</span>(<span class="st">&quot;occCite&quot;</span>), <span class="st">&quot;/extdata/&quot;</span>), </a>
-<a class="sourceLine" id="cb30-12" data-line-number="12">                            <span class="dt">loadLocalGBIFDownload =</span> T,</a>
-<a class="sourceLine" id="cb30-13" data-line-number="13">                            <span class="dt">checkPreviousGBIFDownload =</span> F)</a>
-<a class="sourceLine" id="cb30-14" data-line-number="14"><span class="co"># What does a multispecies query look like?</span></a>
-<a class="sourceLine" id="cb30-15" data-line-number="15"><span class="kw">summary</span>(myPhyOccCiteObject)</a></code></pre></div>
-<pre><code>##      Length       Class        Mode 
-##           1 occCiteData          S4</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">library</span>(ape)</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="co">#Get tree</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>treeFile &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata/Fish_12Tax_time_calibrated.tre&quot;</span>, <span class="dt">package=</span><span class="st">&#39;occCite&#39;</span>)</span>
+<span id="cb30-4"><a href="#cb30-4"></a>phylogeny &lt;-<span class="st"> </span>ape<span class="op">::</span><span class="kw">read.nexus</span>(treeFile)</span>
+<span id="cb30-5"><a href="#cb30-5"></a>tree &lt;-<span class="st"> </span>ape<span class="op">::</span><span class="kw">extract.clade</span>(phylogeny, <span class="dv">18</span>)</span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="co">#Query databases for names</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a>myPhyOccCiteObject &lt;-<span class="st"> </span><span class="kw">studyTaxonList</span>(<span class="dt">x =</span> tree, <span class="dt">datasources =</span> <span class="st">&quot;NCBI&quot;</span>)</span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="co">#Query GBIF for occurrence data</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a>myPhyOccCiteObject &lt;-<span class="st"> </span><span class="kw">occQuery</span>(<span class="dt">x =</span> myPhyOccCiteObject, </span>
+<span id="cb30-10"><a href="#cb30-10"></a>                            <span class="dt">datasources =</span> <span class="st">&quot;gbif&quot;</span>,</span>
+<span id="cb30-11"><a href="#cb30-11"></a>                            <span class="dt">GBIFDownloadDirectory =</span> <span class="kw">paste0</span>(<span class="kw">path.package</span>(<span class="st">&quot;occCite&quot;</span>), <span class="st">&quot;/extdata/&quot;</span>), </span>
+<span id="cb30-12"><a href="#cb30-12"></a>                            <span class="dt">loadLocalGBIFDownload =</span> T,</span>
+<span id="cb30-13"><a href="#cb30-13"></a>                            <span class="dt">checkPreviousGBIFDownload =</span> F)</span>
+<span id="cb30-14"><a href="#cb30-14"></a><span class="co"># What does a multispecies query look like?</span></span>
+<span id="cb30-15"><a href="#cb30-15"></a><span class="kw">summary</span>(myPhyOccCiteObject)</span></code></pre></div>
+<pre><code>##  
+##  OccCite query occurred on: 21 October, 2020
+##  
+##  User query type: User-supplied phylogeny.
+##  
+##  Sources for taxonomic rectification: NCBI
+##      
+##  
+##  Taxonomic cleaning results:     
+## 
+##                   Input Name                 Best Match
+## 1           Istiompax_indica           Istiompax indica
+## 2             Kajikia_albida             Kajikia albida
+## 3              Kajikia_audax              Kajikia audax
+## 4 Tetrapturus_angustirostris Tetrapturus angustirostris
+## 5         Tetrapturus_belone         Tetrapturus belone
+## 6        Tetrapturus_georgii        Tetrapturus georgii
+## 7      Tetrapturus_pfluegeri      Tetrapturus pfluegeri
+##   Taxonomic Databases w/ Matches
+## 1                           NCBI
+## 2                           NCBI
+## 3                           NCBI
+## 4                           NCBI
+## 5                           NCBI
+## 6                           NCBI
+## 7                           NCBI
+##  
+##  Sources for occurrence data: gbif
+##      
+##                      Species Occurrences Sources
+## 1           Istiompax indica         468      23
+## 2             Kajikia albida         167      16
+## 3              Kajikia audax        6721      22
+## 4 Tetrapturus angustirostris         174      22
+## 5         Tetrapturus belone           9       6
+## 6        Tetrapturus georgii          62       4
+## 7      Tetrapturus pfluegeri         409       7
+##  
+##  GBIF dataset DOIs:  
+## 
+##                      Species GBIF Access Date           GBIF DOI
+## 1           Istiompax indica       2019-07-04 10.15468/dl.crapuf
+## 2             Kajikia albida       2019-07-04 10.15468/dl.lnwf6a
+## 3              Kajikia audax       2019-07-04 10.15468/dl.txromp
+## 4 Tetrapturus angustirostris       2019-07-04 10.15468/dl.mumi5e
+## 5         Tetrapturus belone       2019-07-04 10.15468/dl.q2nxb1
+## 6        Tetrapturus georgii       2019-07-04 10.15468/dl.h860up
+## 7      Tetrapturus pfluegeri       2019-07-04 10.15468/dl.qjidbs</code></pre>
 <p>And then you can print out the citations, separated by species (or not, but in this example, they’re separate).</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co">#Get citations</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">myPhyOccCitations &lt;-<span class="st"> </span><span class="kw">occCitation</span>(myPhyOccCiteObject)</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="co">#Print citations as text with accession dates.</span></a>
-<a class="sourceLine" id="cb32-5" data-line-number="5"><span class="kw">print</span>(myPhyOccCitations, <span class="dt">bySpecies =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#Get citations</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>myPhyOccCitations &lt;-<span class="st"> </span><span class="kw">occCitation</span>(myPhyOccCiteObject)</span>
+<span id="cb32-3"><a href="#cb32-3"></a></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="co">#Print citations as text with accession dates.</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="kw">print</span>(myPhyOccCitations, <span class="dt">bySpecies =</span> T)</span></code></pre></div>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'</code></pre>
-<pre><code>## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## &#39;occCite&#39;</code></pre>
+<pre><code>## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)</code></pre>
-<pre><code>## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)</code></pre>
+<pre><code>## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Istiompax indica 
 ## 
 ## Australian Museum (2020). Australian Museum provider for OZCAM. https://doi.org/10.15468/e7susi. Accessed via GBIF on 2019-07-04.
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
 ## Barde J (2011). ecoscope_observation_database. IRD - Institute of Research for Development. https://doi.org/10.15468/dz1kk0. Accessed via GBIF on 2019-07-04.
-## CSIRO Oceans and Atmosphere (2020). CSIRO, Rachel Cruises, Shark Data, Arafura Sea, North Australia, 1984. Version 6.2. https://doi.org/10.15468/yickr6. Accessed via GBIF on 2019-07-04.
-## Catania D, Fong J (2020). CAS Ichthyology (ICH). Version 150.242. California Academy of Sciences. https://doi.org/10.15468/efh2ib. Accessed via GBIF on 2019-07-04.
+## CSIRO Oceans and Atmosphere (2020). CSIRO, Rachel Cruises, Shark Data, Arafura Sea, North Australia, 1984. Version 6.4. https://doi.org/10.15468/yickr6. Accessed via GBIF on 2019-07-04.
+## Catania D, Fong J (2020). CAS Ichthyology (ICH). Version 150.245. California Academy of Sciences. https://doi.org/10.15468/efh2ib. Accessed via GBIF on 2019-07-04.
 ## Cauquil P, Barde J (2011). observe_tuna_bycatch_ecoscope. IRD - Institute of Research for Development. https://doi.org/10.15468/23m361. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
@@ -580,14 +756,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## European Nucleotide Archive (EMBL-EBI) (2019). Geographically tagged INSDC sequences. https://doi.org/10.15468/cndomv. Accessed via GBIF on 2019-07-04.
 ## Feeney R (2019). LACM Vertebrate Collection. Version 18.7. Natural History Museum of Los Angeles County. https://doi.org/10.15468/77rmwd. Accessed via GBIF on 2019-07-04.
 ## Mackay K (2018). New Zealand research tagging database. Version 1.5. Southwestern Pacific Ocean Biogeographic Information System (OBIS) Node. https://doi.org/10.15468/i66xdm. Accessed via GBIF on 2019-07-04.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
 ## Museum and Art Gallery of the Northern Territory (2019). Northern Territory Museum and Art Gallery provider for OZCAM. https://doi.org/10.15468/giro3a. Accessed via GBIF on 2019-07-04.
 ## Museums Victoria (2020). Museums Victoria provider for OZCAM. https://doi.org/10.15468/lp1ctu. Accessed via GBIF on 2019-07-04.
 ## Pozo de la Tijera M D C, Comisión nacional para el conocimiento y uso de la biodiversidad C (2020). Fortalecimiento de las colecciones de ECOSUR. Primera fase (Ictioplancton Chetumal). Version 1.3. Comisión nacional para el conocimiento y uso de la biodiversidad. https://doi.org/10.15468/orx3mk. Accessed via GBIF on 2019-07-04.
 ## Queensland Museum (2020). Queensland Museum provider for OZCAM. https://doi.org/10.15468/lotsye. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 ## Raiva R, Santana P (2019). Diversidade e ocorrência de peixes em Inhambane (2009-2017). Version 1.4. National Institute of Fisheries Research (IIP) – Mozambique. https://doi.org/10.15468/4fj2tq. Accessed via GBIF on 2019-07-04.
 ## Raiva R, Viador R, Santana P (2019). Diversidade e ocorrência de peixes na Zambézia (2003-2016). National Institute of Fisheries Research (IIP) – Mozambique. https://doi.org/10.15468/mrz36h. Accessed via GBIF on 2019-07-04.
-## Robins R (2020). UF FLMNH Ichthyology. Version 117.280. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
+## Robins R (2020). UF FLMNH Ichthyology. Version 117.282. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
 ## Shane G (2018). Pelagic fish food web linkages, Queensland, Australia (2003-2005). CSIRO Oceans and Atmosphere. https://doi.org/10.15468/yy5wdp. Accessed via GBIF on 2019-07-04.
 ## Sánchez González S, Comisión nacional para el conocimiento y uso de la biodiversidad C (2020). Taxonomía y sistemática de la Ictiofauna de la Bahía de Banderas del Estado de Nayarit, México. Comisión nacional para el conocimiento y uso de la biodiversidad. https://doi.org/10.15468/uhrwsl. Accessed via GBIF on 2019-07-04.
 ## The International Barcode of Life Consortium (2016). International Barcode of Life project (iBOL). https://doi.org/10.15468/inygc6. Accessed via GBIF on 2019-07-04.
@@ -595,20 +773,20 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## Ueda K (2020). iNaturalist Research-grade Observations. iNaturalist.org. https://doi.org/10.15468/ab3s5x. Accessed via GBIF on 2019-07-04.
 ## Western Australian Museum (2019). Western Australian Museum provider for OZCAM. https://doi.org/10.15468/5qt0dm. Accessed via GBIF on 2019-07-04.</code></pre>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'
+## &#39;occCite&#39;
 
-## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
-## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
+## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Kajikia albida 
 ## 
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
 ## Barde J (2011). ecoscope_observation_database. IRD - Institute of Research for Development. https://doi.org/10.15468/dz1kk0. Accessed via GBIF on 2019-07-04.
 ## Bentley A (2020). KUBI Ichthyology Collection. Version 17.67. University of Kansas Biodiversity Institute. https://doi.org/10.15468/mgjasg. Accessed via GBIF on 2019-07-04.
 ## Bentley A (2020). KUBI Ichthyology Tissue Collection. Version 18.55. University of Kansas Biodiversity Institute. https://doi.org/10.15468/jmsnwg. Accessed via GBIF on 2019-07-04.
-## Casassovici A, Brosens D (2020). Diveboard - Scuba diving citizen science observations. Version 54.29. Diveboard. https://doi.org/10.15468/tnjrgy. Accessed via GBIF on 2019-07-04.
+## Casassovici A, Brosens D (2020). Diveboard - Scuba diving citizen science observations. Version 54.30. Diveboard. https://doi.org/10.15468/tnjrgy. Accessed via GBIF on 2019-07-04.
 ## Cauquil P, Barde J (2011). observe_tuna_bycatch_ecoscope. IRD - Institute of Research for Development. https://doi.org/10.15468/23m361. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
@@ -616,26 +794,28 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## European Nucleotide Archive (EMBL-EBI) (2019). Geographically tagged INSDC sequences. https://doi.org/10.15468/cndomv. Accessed via GBIF on 2019-07-04.
 ## Feeney R (2019). LACM Vertebrate Collection. Version 18.7. Natural History Museum of Los Angeles County. https://doi.org/10.15468/77rmwd. Accessed via GBIF on 2019-07-04.
 ## Frable B (2019). SIO Marine Vertebrate Collection. Version 1.7. Scripps Institution of Oceanography. https://doi.org/10.15468/ad1ovc. Accessed via GBIF on 2019-07-04.
-## Harvard University M, Morris P J (2020). Museum of Comparative Zoology, Harvard University. Version 162.228. Museum of Comparative Zoology, Harvard University. https://doi.org/10.15468/p5rupv. Accessed via GBIF on 2019-07-04.
+## Harvard University M, Morris P J (2020). Museum of Comparative Zoology, Harvard University. Version 162.232. Museum of Comparative Zoology, Harvard University. https://doi.org/10.15468/p5rupv. Accessed via GBIF on 2019-07-04.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
 ## Millen B (2019). Ichthyology Collection - Royal Ontario Museum. Version 18.7. Royal Ontario Museum. https://doi.org/10.15468/syisbx. Accessed via GBIF on 2019-07-04.
-## Orrell T (2020). NMNH Extant Specimen Records. Version 1.35. National Museum of Natural History, Smithsonian Institution. https://doi.org/10.15468/hnhrg3. Accessed via GBIF on 2019-07-04.
+## Orrell T (2020). NMNH Extant Specimen Records. Version 1.36. National Museum of Natural History, Smithsonian Institution. https://doi.org/10.15468/hnhrg3. Accessed via GBIF on 2019-07-04.
 ## Pozo de la Tijera M D C, Comisión nacional para el conocimiento y uso de la biodiversidad C (2020). Fortalecimiento de las colecciones de ECOSUR. Primera fase (Ictioplancton Chetumal). Version 1.3. Comisión nacional para el conocimiento y uso de la biodiversidad. https://doi.org/10.15468/orx3mk. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
-## Robins R (2020). UF FLMNH Ichthyology. Version 117.280. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## Robins R (2020). UF FLMNH Ichthyology. Version 117.282. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
 ## The International Barcode of Life Consortium (2016). International Barcode of Life project (iBOL). https://doi.org/10.15468/inygc6. Accessed via GBIF on 2019-07-04.</code></pre>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'
+## &#39;occCite&#39;
 
-## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
-## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
+## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Kajikia audax 
 ## 
 ## Australian Museum (2020). Australian Museum provider for OZCAM. https://doi.org/10.15468/e7susi. Accessed via GBIF on 2019-07-04.
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
 ## Barde J (2011). ecoscope_observation_database. IRD - Institute of Research for Development. https://doi.org/10.15468/dz1kk0. Accessed via GBIF on 2019-07-04.
 ## Cauquil P, Barde J (2011). observe_tuna_bycatch_ecoscope. IRD - Institute of Research for Development. https://doi.org/10.15468/23m361. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
@@ -650,29 +830,31 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## Mackay K (2018). New Zealand research tagging database. Version 1.5. Southwestern Pacific Ocean Biogeographic Information System (OBIS) Node. https://doi.org/10.15468/i66xdm. Accessed via GBIF on 2019-07-04.
 ## Mackay K (2019). Marine biological observation data from coastal and offshore surveys around New Zealand. Version 1.8. The National Institute of Water and Atmospheric Research (NIWA). https://doi.org/10.15468/pzpgop. Accessed via GBIF on 2019-07-04.
 ## Maslenikov K (2019). UWFC Ichthyology Collection. University of Washington Burke Museum. https://doi.org/10.15468/vvp7gr. Accessed via GBIF on 2019-07-04.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
 ## Museum and Art Gallery of the Northern Territory (2019). Northern Territory Museum and Art Gallery provider for OZCAM. https://doi.org/10.15468/giro3a. Accessed via GBIF on 2019-07-04.
-## Orrell T (2020). NMNH Extant Specimen Records. Version 1.35. National Museum of Natural History, Smithsonian Institution. https://doi.org/10.15468/hnhrg3. Accessed via GBIF on 2019-07-04.
+## Orrell T (2020). NMNH Extant Specimen Records. Version 1.36. National Museum of Natural History, Smithsonian Institution. https://doi.org/10.15468/hnhrg3. Accessed via GBIF on 2019-07-04.
 ## Queensland Museum (2020). Queensland Museum provider for OZCAM. https://doi.org/10.15468/lotsye. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
-## Robins R (2020). UF FLMNH Ichthyology. Version 117.280. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## Robins R (2020). UF FLMNH Ichthyology. Version 117.282. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
 ## The International Barcode of Life Consortium (2016). International Barcode of Life project (iBOL). https://doi.org/10.15468/inygc6. Accessed via GBIF on 2019-07-04.
 ## Uchifune Y, Yamamoto H (2020). Asia-Pacific Dataset. Version 1.33. National Museum of Nature and Science, Japan. https://doi.org/10.15468/vjeh1p. Accessed via GBIF on 2019-07-04.
 ## Ueda K (2020). iNaturalist Research-grade Observations. iNaturalist.org. https://doi.org/10.15468/ab3s5x. Accessed via GBIF on 2019-07-04.</code></pre>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'
+## &#39;occCite&#39;
 
-## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
-## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
+## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Tetrapturus angustirostris 
 ## 
 ## Australian Museum (2020). Australian Museum provider for OZCAM. https://doi.org/10.15468/e7susi. Accessed via GBIF on 2019-07-04.
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
 ## Barde J (2011). ecoscope_observation_database. IRD - Institute of Research for Development. https://doi.org/10.15468/dz1kk0. Accessed via GBIF on 2019-07-04.
-## Catania D, Fong J (2020). CAS Ichthyology (ICH). Version 150.242. California Academy of Sciences. https://doi.org/10.15468/efh2ib. Accessed via GBIF on 2019-07-04.
+## Catania D, Fong J (2020). CAS Ichthyology (ICH). Version 150.245. California Academy of Sciences. https://doi.org/10.15468/efh2ib. Accessed via GBIF on 2019-07-04.
 ## Cauquil P, Barde J (2011). observe_tuna_bycatch_ecoscope. IRD - Institute of Research for Development. https://doi.org/10.15468/23m361. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
@@ -680,74 +862,82 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## European Nucleotide Archive (EMBL-EBI) (2019). Geographically tagged INSDC sequences. https://doi.org/10.15468/cndomv. Accessed via GBIF on 2019-07-04.
 ## Feeney R (2019). LACM Vertebrate Collection. Version 18.7. Natural History Museum of Los Angeles County. https://doi.org/10.15468/77rmwd. Accessed via GBIF on 2019-07-04.
 ## Frable B (2019). SIO Marine Vertebrate Collection. Version 1.7. Scripps Institution of Oceanography. https://doi.org/10.15468/ad1ovc. Accessed via GBIF on 2019-07-04.
-## Harvard University M, Morris P J (2020). Museum of Comparative Zoology, Harvard University. Version 162.228. Museum of Comparative Zoology, Harvard University. https://doi.org/10.15468/p5rupv. Accessed via GBIF on 2019-07-04.
+## Harvard University M, Morris P J (2020). Museum of Comparative Zoology, Harvard University. Version 162.232. Museum of Comparative Zoology, Harvard University. https://doi.org/10.15468/p5rupv. Accessed via GBIF on 2019-07-04.
 ## Mackay K (2018). New Zealand research tagging database. Version 1.5. Southwestern Pacific Ocean Biogeographic Information System (OBIS) Node. https://doi.org/10.15468/i66xdm. Accessed via GBIF on 2019-07-04.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
 ## National Museum of Nature and Science, Japan (2020). Fish specimens of Kagoshima University Museum. https://doi.org/10.15468/vcj3j8. Accessed via GBIF on 2019-07-04.
 ## Queensland Museum (2020). Queensland Museum provider for OZCAM. https://doi.org/10.15468/lotsye. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 ## Raiva R, Santana P (2019). Diversidade e ocorrência de peixes em Inhambane (2009-2017). Version 1.4. National Institute of Fisheries Research (IIP) – Mozambique. https://doi.org/10.15468/4fj2tq. Accessed via GBIF on 2019-07-04.
 ## Raiva R, Viador R, Santana P (2019). Diversidade e ocorrência de peixes na Zambézia (2003-2016). National Institute of Fisheries Research (IIP) – Mozambique. https://doi.org/10.15468/mrz36h. Accessed via GBIF on 2019-07-04.
-## Robins R (2020). UF FLMNH Ichthyology. Version 117.280. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
+## Robins R (2020). UF FLMNH Ichthyology. Version 117.282. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
 ## South Australian Museum (2020). South Australian Museum Australia provider for OZCAM. https://doi.org/10.15468/wz4rrh. Accessed via GBIF on 2019-07-04.
 ## The International Barcode of Life Consortium (2016). International Barcode of Life project (iBOL). https://doi.org/10.15468/inygc6. Accessed via GBIF on 2019-07-04.
 ## Uchifune Y, Yamamoto H (2020). Asia-Pacific Dataset. Version 1.33. National Museum of Nature and Science, Japan. https://doi.org/10.15468/vjeh1p. Accessed via GBIF on 2019-07-04.
 ## Ueda K (2020). iNaturalist Research-grade Observations. iNaturalist.org. https://doi.org/10.15468/ab3s5x. Accessed via GBIF on 2019-07-04.
 ## Western Australian Museum (2019). Western Australian Museum provider for OZCAM. https://doi.org/10.15468/5qt0dm. Accessed via GBIF on 2019-07-04.</code></pre>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'
+## &#39;occCite&#39;
 
-## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
-## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
+## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Tetrapturus belone 
 ## 
 ## Bentley A (2020). KUBI Ichthyology Collection. Version 17.67. University of Kansas Biodiversity Institute. https://doi.org/10.15468/mgjasg. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
 ## European Nucleotide Archive (EMBL-EBI) (2019). Geographically tagged INSDC sequences. https://doi.org/10.15468/cndomv. Accessed via GBIF on 2019-07-04.
-## Harvard University M, Morris P J (2020). Museum of Comparative Zoology, Harvard University. Version 162.228. Museum of Comparative Zoology, Harvard University. https://doi.org/10.15468/p5rupv. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## Harvard University M, Morris P J (2020). Museum of Comparative Zoology, Harvard University. Version 162.232. Museum of Comparative Zoology, Harvard University. https://doi.org/10.15468/p5rupv. Accessed via GBIF on 2019-07-04.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 ## Ranz J (2017). Banco de Datos de la Biodiversidad de la Comunitat Valenciana. Biodiversity data bank of Generalitat Valenciana. https://doi.org/10.15468/b4yqdy. Accessed via GBIF on 2019-07-04.
-## Robins R (2020). UF FLMNH Ichthyology. Version 117.280. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
-## UMS PatriNat (OFB-CNRS-MNHN), Paris (2020). Données d'occurrences Espèces issues de l'inventaire des ZNIEFF. Version 1.1. https://doi.org/10.15468/ikshke. Accessed via GBIF on 2019-07-04.</code></pre>
+## Robins R (2020). UF FLMNH Ichthyology. Version 117.282. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
+## UMS PatriNat (OFB-CNRS-MNHN), Paris (2020). Données d&#39;occurrences Espèces issues de l&#39;inventaire des ZNIEFF. Version 1.1. https://doi.org/10.15468/ikshke. Accessed via GBIF on 2019-07-04.</code></pre>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'
+## &#39;occCite&#39;
 
-## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
-## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
+## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Tetrapturus georgii 
 ## 
 ## Bentley A (2020). KUBI Ichthyology Collection. Version 17.67. University of Kansas Biodiversity Institute. https://doi.org/10.15468/mgjasg. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
 ## European Nucleotide Archive (EMBL-EBI) (2019). Geographically tagged INSDC sequences. https://doi.org/10.15468/cndomv. Accessed via GBIF on 2019-07-04.
-## Orrell T (2020). NMNH Extant Specimen Records. Version 1.35. National Museum of Natural History, Smithsonian Institution. https://doi.org/10.15468/hnhrg3. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
+## Orrell T (2020). NMNH Extant Specimen Records. Version 1.36. National Museum of Natural History, Smithsonian Institution. https://doi.org/10.15468/hnhrg3. Accessed via GBIF on 2019-07-04.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 ## The International Barcode of Life Consortium (2016). International Barcode of Life project (iBOL). https://doi.org/10.15468/inygc6. Accessed via GBIF on 2019-07-04.</code></pre>
 <pre><code>## Warning in utils::citation(pkg): no date field in DESCRIPTION file of package
-## 'occCite'
+## &#39;occCite&#39;
 
-## Warning in utils::citation(pkg): could not determine year for 'occCite' from
+## Warning in utils::citation(pkg): could not determine year for &#39;occCite&#39; from
 ## package DESCRIPTION file</code></pre>
-<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype 'Manual' has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
-## Writing 3 Bibtex entries ... OK
-## Results written to file 'temp.bib'</code></pre>
+<pre><code>## Ignoring entry titled &quot;occCite: Querying and Managing Large Biodiversity Occurrence Datasets&quot; because owensocccite: A bibentry of bibtype &#39;Manual&#39; has to specify the field: c(&quot;year&quot;, &quot;date&quot;)
+## Writing 5 Bibtex entries ... OK
+## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## Species: Tetrapturus pfluegeri 
 ## 
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
-## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d'observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités (Réunion). Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/elttrd. Accessed via GBIF on 2019-07-04.
+## BARDE Julien N, Inventaire National du Patrimoine Naturel (2019). Programme Ecoscope: données d&#39;observations des écosystèmes marins exploités. Version 1.1. UMS PatriNat (OFB-CNRS-MNHN), Paris. https://doi.org/10.15468/gdrknh. Accessed via GBIF on 2019-07-04.
 ## Barde J (2011). ecoscope_observation_database. IRD - Institute of Research for Development. https://doi.org/10.15468/dz1kk0. Accessed via GBIF on 2019-07-04.
 ## Cauquil P, Barde J (2011). observe_tuna_bycatch_ecoscope. IRD - Institute of Research for Development. https://doi.org/10.15468/23m361. Accessed via GBIF on 2019-07-04.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2020). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.3.0. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
 ## European Nucleotide Archive (EMBL-EBI) (2019). Geographically tagged INSDC sequences. https://doi.org/10.15468/cndomv. Accessed via GBIF on 2019-07-04.
-## R Core Team. (2019). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
-## Robins R (2020). UF FLMNH Ichthyology. Version 117.280. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
+## McLean, M.W. (2014). Straightforward Bibliography Management in R Using the RefManager Package. NA, NA. https://arxiv.org/abs/1403.2036.
+## McLean, M.W. (2017). RefManageR: Import and Manage BibTeX and BibLaTeX References in R. The Journal of Open Source Software.
+## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+## Robins R (2020). UF FLMNH Ichthyology. Version 117.282. Florida Museum of Natural History. https://doi.org/10.15468/8mjsel. Accessed via GBIF on 2019-07-04.
 ## The International Barcode of Life Consortium (2016). International Barcode of Life project (iBOL). https://doi.org/10.15468/inygc6. Accessed via GBIF on 2019-07-04.</code></pre>
 </div>
 </div>

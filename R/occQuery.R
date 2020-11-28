@@ -38,7 +38,7 @@
 #' on the occurrence sources queried.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' ##If you have already created a occCite object, and have not previously
 #' ##downloaded GBIF data.
 #' occQuery(x = myOccCiteObject,
@@ -80,24 +80,24 @@ occQuery <- function(x = NULL,
   on.exit(setwd(oldwd))
 
   #Error check input x.
-  if (!class(x)=="occCiteData" && !is.vector(x)){
+  if (!is(x, "occCiteData") && !is.vector(x)){
     warning("Input x is not of class 'occCiteData', nor is it a vector. Input x must be result of a studyTaxonList() search OR a vector with a list of taxon names.\n")
     return(NULL)
   }
 
   #Instantiate a occCite data object if one was not supplied
-  if(class(x) != "occCiteData"){
+  if(!is(x, "occCiteData")){
     x <- studyTaxonList(x)
   }
 
   #Error check input datasources.
-  if (!is.vector(datasources) && class(datasources)=="character"){
+  if (!is.vector(datasources) && is(datasources, "character")){
     warning("Input datasources is not of class 'vector'. Datasources object must be a vector of class 'character'.\n")
     return(NULL)
   }
 
   #Error check input GBIF directory.
-  if ("gbif" %in% datasources && !is.null(GBIFDownloadDirectory) && class(GBIFDownloadDirectory) != "character"){
+  if ("gbif" %in% datasources && !is.null(GBIFDownloadDirectory) && !is(GBIFDownloadDirectory, "character")){
     warning("Input GBIFDownload directory is not of class 'character'.\n")
     return(NULL)
   }
@@ -138,13 +138,13 @@ occQuery <- function(x = NULL,
   }
 
   #If GBIF was selected, check to see if GBIF login information is supplied.
-  if ("gbif" %in% datasources && !class(GBIFLogin) == "GBIFLogin" && !loadLocalGBIFDownload){
+  if ("gbif" %in% datasources && !is(GBIFLogin, "GBIFLogin") && !loadLocalGBIFDownload){
     warning("You have chosen GBIF as a datasource, but have not supplied GBIF login information. Please create a GBIFLogin object using GBIFLoginManager().\n")
     return(NULL)
   }
 
   #Get time stamp for search
-  x@occCiteSearchDate <- as.character(Sys.Date(), format = "%d %B, %Y")
+  x@occCiteSearchDate <- as.character(Sys.Date(), format = "%Y-%m-%d")
 
   #Occurrence queries for each species
   queryResults <- x
@@ -189,9 +189,7 @@ occQuery <- function(x = NULL,
     names(bienResults) <- searchTaxa
     if("bien" %in% datasources){
       for (i in searchTaxa){
-        temp <- getBIENpoints(taxon = i)
-        temp[[1]] <- BIENtableCleanup(temp[[1]])
-        bienResults[[i]] <- temp
+        bienResults[[i]] <- getBIENpoints(taxon = i)
       }
     }
   }

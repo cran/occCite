@@ -1,3 +1,12 @@
+# occCite v0.5-alpha
+
+* Ongoing development
+
+# occCite 0.4.5
+
+* sumFig() function is now a `plot` method for objects of class `occCiteData`.
+* `map.occCite()` has been renamed `occCiteMap()` to avoid confusion with existing method naming conventions.
+
 # occCite 0.4.0
 
 * Removed a package dependency that was causing warnings on some systems.

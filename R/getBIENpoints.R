@@ -11,7 +11,7 @@
 #' the raw results of a query to `BIEN::BIEN_occurrence_species()`.}
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' getBIENpoints(taxon="Protea cynaroides")
 #' }
 #'
@@ -54,14 +54,22 @@ getBIENpoints<-function(taxon){
                   'yearCollected', 'dataset','datasource_id')]
   dataService <- rep("BIEN", nrow(outdata))
   outdata <- cbind(outdata, dataService)
+  colnames(outdata) <- c("name", "longitude", "latitude",
+                            "day", "month", "year",
+                            "Dataset", "DatasetKey", "DataService")
 
-  colnames(outdata) <- c("name", "longitude",
-                         "latitude", "day", "month",
-                         "year", "Dataset",
-                         "DatasetKey", "DataService")
+  outdata["name"] <- as.factor(unlist(outdata["name"]))
+  outdata["longitude"] <- as.numeric(unlist(outdata["longitude"]))
+  outdata["latitude"] <- as.numeric(unlist(outdata["latitude"]))
+  outdata["day"] <- as.integer(unlist(outdata["day"]))
+  outdata["month"] <- as.integer(unlist(outdata["month"]))
+  outdata["year"] <- as.integer(unlist(outdata["year"]))
+  outdata["Dataset"] <- as.factor(unlist(outdata["Dataset"]))
+  outdata["DatasetKey"] <- as.factor(unlist(outdata["DatasetKey"]))
+  outdata["DataService"] <- as.factor(unlist(outdata["DataService"]))
 
   #Get metadata
-  occMetadata <- BIEN::BIEN_metadata_citation(occs)
+  occMetadata <- BIEN::BIEN_metadata_citation()
   occMetadata$license <- "CC BY-NC-ND"
 
   #Package it all up

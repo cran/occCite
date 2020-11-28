@@ -21,7 +21,7 @@ summary.occCiteData <- function(object, ...) {
 
   if(!is.null(x@occCiteSearchDate)){
     cat("\t\n",
-        sprintf("OccCite query occurred on: %s\n", x@occCiteSearchDate))
+        sprintf("OccCite query occurred on: %s\n", as.character(as.Date(x@occCiteSearchDate), format = "%d %B, %Y")))
   }
 
   if(!is.null(x@userQueryType)){
@@ -29,10 +29,10 @@ summary.occCiteData <- function(object, ...) {
         sprintf("User query type: %s\n", x@userQueryType))
   }
 
-  if(!is.null(x@userSpecTaxonomicSources)){
+  if(!is.null(x@userSpecTaxonomy)){
     cat("\t\n",
         sprintf("Sources for taxonomic rectification: %s\n",
-                paste0(x@userSpecTaxonomicSources, collapse = ", ")), "\t\n")
+                paste0(x@userSpecTaxonomy, collapse = ", ")), "\t\n")
   }
 
   if(!is.null(x@cleanedTaxonomy)){

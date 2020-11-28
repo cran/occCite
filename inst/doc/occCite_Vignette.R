@@ -17,7 +17,7 @@ knitr::opts_knit$set(root.dir = system.file('extdata/', package='occCite'))
 #                                    datasources = c("gbif", "bien"),
 #                                    GBIFLogin = GBIFLogin,
 #                                    GBIFDownloadDirectory =
-#                                      paste0(path.package("occCite"), "/extdata/"),
+#                                      system.file('extdata/', package='occCite'),
 #                                    checkPreviousGBIFDownload = T)
 
 ## ----simple_search sssssecret cooking show, eval=T, echo = F------------------
@@ -35,6 +35,9 @@ head(mySimpleOccCiteObject@occResults$`Protea cynaroides`$BIEN$OccurrenceTable)
 
 ## ----summary of simple search-------------------------------------------------
 summary(mySimpleOccCiteObject)
+
+## ----plotting a simple search, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="33%"----
+plot(mySimpleOccCiteObject)
 
 ## ----simple_citation----------------------------------------------------------
 #Get citations
@@ -54,7 +57,7 @@ myTROccCiteObject@cleanedTaxonomy
 myOldOccCiteObject <- occQuery(x = "Protea cynaroides", 
                                   datasources = c("gbif", "bien"), 
                                   GBIFLogin = NULL, 
-                                  GBIFDownloadDirectory = paste0(path.package("occCite"), "/extdata/"),
+                                  GBIFDownloadDirectory = system.file('extdata/', package='occCite'),
                                   loadLocalGBIFDownload = T,
                                   checkPreviousGBIFDownload = F)
 
@@ -80,11 +83,17 @@ myPhyOccCiteObject <- studyTaxonList(x = tree, datasources = "NCBI")
 #Query GBIF for occurrence data
 myPhyOccCiteObject <- occQuery(x = myPhyOccCiteObject, 
                             datasources = "gbif",
-                            GBIFDownloadDirectory = paste0(path.package("occCite"), "/extdata/"), 
+                            GBIFDownloadDirectory = system.file('extdata/', package='occCite'),
                             loadLocalGBIFDownload = T,
                             checkPreviousGBIFDownload = F)
 # What does a multispecies query look like?
 summary(myPhyOccCiteObject)
+
+## ----plotting all species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="33%"----
+plot(myPhyOccCiteObject)
+
+## ----plotting phylogenetic search by species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="33%"----
+plot(myPhyOccCiteObject, bySpecies = T)
 
 ## ----getting_citations_for_a_multispecies_search, echo=T----------------------
 #Get citations

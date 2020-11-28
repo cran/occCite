@@ -1,7 +1,7 @@
 #' @title Tabulate occurrence results
 #'
 #' @description This is a helper function that tabulates `occCiteData`
-#' objects for use by map.occCite and `sumFig.occCite`.
+#' objects for use by occCiteMap and `plot`.
 #'
 #' @param x One species' worth of results from an `occCiteData` object
 #'
@@ -70,7 +70,7 @@ tabulate.occResults <- function(x, sp.name) {
 #'
 #' @examples
 #' data(myOccCiteObject)
-#' map.occCite(myOccCiteObject, cluster = FALSE)
+#' occCiteMap(myOccCiteObject, cluster = FALSE)
 #'
 #' @importFrom dplyr "%>%" filter
 #' @importFrom rlang .data
@@ -79,7 +79,7 @@ tabulate.occResults <- function(x, sp.name) {
 #' @export
 #'
 
-map.occCite <- function(occCiteData,
+occCiteMap <- function(occCiteData,
                         species_map = "all",
                         species_colors = NULL,
                         ds_map = c("GBIF", "BIEN"),
@@ -114,13 +114,13 @@ map.occCite <- function(occCiteData,
       stop("Number of species colors provided must match number of species mapped.")
     }
     if(awesomeMarkers == TRUE & !all(species_colors %in% awesomeMarkers.cols)) {
-      stop("If mapping awesomeMarkers, please specify species colors from those available (see Details in ?map.occCite)")
+      stop("If mapping awesomeMarkers, please specify species colors from those available (see Details in ?occCiteMap)")
     }
   }
 
   d.tbl <- lapply(1:length(d.res), function(x) tabulate.occResults(d.res[[x]], names(d.res)[x]))
   for(i in 1:length(d.tbl)) {
-    d.tbl[[i]] <- d.tbl[[i]][complete.cases(d.tbl[[1]][,c("longitude", "latitude")]),]
+    if(nrow(d.tbl[[i]]) > 0) d.tbl[[i]] <- d.tbl[[i]][complete.cases(d.tbl[[1]][,c("longitude", "latitude")]),]
     d.tbl.n <- nrow(d.tbl[[i]])
     if(d.tbl.n > map_limit) {
       message(paste0("Number of occurrences for ", sp.names[i], " exceeds limit of ",
@@ -209,6 +209,7 @@ map.occCite <- function(occCiteData,
     }
   }else{
     for(i in sp.names) {
+      d.nest.i <- d.nest %>% dplyr::filter(.data$name == i)
       if(nrow(d.nest.i) == 0) next
       sp.cols.i <- sp.cols[[i]]
       labs.lst.i <- labs.lst[[i]]
@@ -218,10 +219,10 @@ map.occCite <- function(occCiteData,
                                            radius = 5, fill = TRUE, fillOpacity = 0.5, clusterOptions = clusterOpts)
     }
   }
-  m
+  return(m)
 }
 
-#' @title Generating summary figures for occCite search results
+#' @title Plotting summary figures for occCite search results
 #'
 #' @description Generates up to three different kinds of plots,
 #' with toggles determining whether plots should be done for
@@ -229,30 +230,50 @@ map.occCite <- function(occCiteData,
 #' by year of occurrence records, waffle::waffle plot of primary
 #' data sources, waffle::waffle plot of data aggregators.
 #'
-#' @param occCiteData An object of class \code{\link{occCiteData}} to
+#' @param x An object of class \code{\link{occCiteData}} to
 #' map.
 #'
-#' @param bySpecies Logical; setting to `TRUE` generates the desired
+#' @param ... Additional arguments affecting how the formatted
+#' citation document is produced.
+#' `bySpecies`: Logical; setting to `TRUE` generates the desired
 #' plots for each species.
-#'
-#' @param plotTypes The type of plot to be generated; "yearHistogram",
+#' `plotTypes`: The type of plot to be generated; "yearHistogram",
 #' "source", and/or "aggregator".
 #'
 #' @return A list containing the desired plots.
 #'
 #' @examples
 #' data(myOccCiteObject)
-#' sumFig.occCite(myOccCiteObject, bySpecies = FALSE,
-#'                plotType = c("yearHistogram", "source", "aggregator"))
+#' plot(x = myOccCiteObject, bySpecies = FALSE,
+#'                plotTypes = c("yearHistogram", "source", "aggregator"))
 #'
 #' @importFrom ggplot2 ggplot aes geom_histogram ggtitle theme xlab ylab theme_classic scale_y_continuous ggplot_build element_text
 #' @importFrom stats complete.cases
+#' @importFrom methods is
 #'
+#' @method plot occCiteData
 #' @export
 #'
-sumFig.occCite <- function (occCiteData, bySpecies = FALSE, plotTypes = c("yearHistogram", "source", "aggregator")){
+plot.occCiteData <- function (x, ...){
+
+  args <- list(...)
+
+  if ("bySpecies" %in% names(args)){
+    bySpecies <- args$bySpecies
+  } else {
+    bySpecies <- FALSE
+  }
+
+  if ("plotTypes" %in% names(args)){
+    plotTypes <- args$plotType
+  } else {
+    plotTypes <- c("yearHistogram", "source", "aggregator")
+  }
+
+  stopifnot(is(x, "occCiteData"))
+
   #Error check input.
-  if (!class(occCiteData)=="occCiteData"){
+  if (!is(x, "occCiteData")){
     warning("Input is not of class 'occCiteData'.\n")
     return(NULL);
   }
@@ -272,7 +293,7 @@ sumFig.occCite <- function (occCiteData, bySpecies = FALSE, plotTypes = c("yearH
     plotTypes <- plots
   }
 
-  d.res <- occCiteData@occResults
+  d.res <- x@occResults
   d.tbl <- lapply(1:length(d.res), function(x) tabulate.occResults(d.res[[x]], names(d.res)[x]))
   for(i in 1:length(d.tbl)) {
     d.tbl[[i]] <- d.tbl[[i]][complete.cases(d.tbl[[1]][,c("longitude", "latitude")]),]
@@ -289,13 +310,18 @@ sumFig.occCite <- function (occCiteData, bySpecies = FALSE, plotTypes = c("yearH
 
   d <- dplyr::bind_rows(d.tbl)
   d$Dataset[d$Dataset==""] <- "Dataset not specified"
+  d <- d[,c("name", "year", "Dataset", "DataService")]
+  d <- d[complete.cases(d),]
 
   if(!bySpecies){
     allPlots <- vector(mode = "list", length = length(plotTypes))
     if("yearHistogram" %in% plotTypes){
       yearHistogram <- d %>%
         ggplot( aes(x=year)) +
-        geom_histogram( binwidth= (max(d$year)-min(d$year))/10, fill="black", color="white", alpha=0.9) +
+        geom_histogram( binwidth= (max(d$year,
+                                       na.rm = T)-min(d$year,
+                                                      na.rm =T))/10,
+                        fill="black", color="white", alpha=0.9, na.rm = T) +
         ggtitle("All Occurrence Records by Year") +
         theme(plot.title = element_text(size=15)) +
         xlab("Year") +
@@ -310,7 +336,7 @@ sumFig.occCite <- function (occCiteData, bySpecies = FALSE, plotTypes = c("yearH
       pct <- round(datasetTab/sum(datasetTab)*100)
       lbls <- names(datasetTab)
       lbls <- paste(lbls, pct) # add percents to labels
-      lbls <- paste(lbls,"%",sep="") # ad % to labels
+      lbls <- paste(lbls,"%",sep="") # add % to labels
       names(pct) <- lbls
       pct <- pct[pct > 1]
       if(sum(pct) < 100){
@@ -348,15 +374,19 @@ sumFig.occCite <- function (occCiteData, bySpecies = FALSE, plotTypes = c("yearH
   }
   else{
     spList <- unique(d$name)
+    spList <- spList[!is.na(spList)]
     spPlotList <- vector(mode = "list", length = length(spList))
     for (sp in spList){
       allPlots <- vector(mode = "list", length = length(plotTypes))
       sub.d <- d[d$name == sp,]
+      sub.d <- sub.d[complete.cases(sub.d),]
       if("yearHistogram" %in% plotTypes){
         yearHistogram <- sub.d %>%
           ggplot(aes(x=year)) +
-          geom_histogram( binwidth= (max(sub.d$year)-min(sub.d$year))/10,
-                          fill="black", color="white", alpha=0.9) +
+          geom_histogram(binwidth= (max(sub.d$year,
+                                         na.rm = T)-min(sub.d$year,
+                                                        na.rm = T))/10,
+                          fill="black", color="white", alpha=0.9, na.rm = T) +
           ggtitle(paste0(sp, " Occurrence Records by Year")) +
           theme(plot.title = element_text(size=15)) +
           xlab("Year") +
@@ -399,8 +429,10 @@ sumFig.occCite <- function (occCiteData, bySpecies = FALSE, plotTypes = c("yearH
         lbls <- paste(lbls, pct) # add percents to labels
         lbls <- paste(lbls,"%",sep="") # ad % to labels
         names(pct) <- lbls
-        aggregator <- waffle::waffle(pct, rows = 10, colors = viridis::viridis(length(datasetTab)),
-                                     title = paste0(sp, " Occurrences by Data Aggregator"))
+        aggregator <- waffle::waffle(pct, rows = 10,
+                                     colors = viridis::viridis(length(datasetTab)),
+                                     title = paste0(sp,
+                                                    " Occurrences by Data Aggregator"))
         aggregator <- ggplot_build(aggregator)
         allPlots[[length(allPlots)]] <- aggregator
       }

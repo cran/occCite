@@ -49,7 +49,9 @@ print(mySimpleOccCitations)
 ## ----taxonomic_rectification--------------------------------------------------
 #Rectify taxonomy
 myTROccCiteObject <- studyTaxonList(x = "Protea cynaroides", 
-                                  datasources = c("NCBI", "EOL", "ITIS"))
+                                  datasources = c("National Center for Biotechnology Information",
+                                                  "Encyclopedia of Life", 
+                                                  "Integrated Taxonomic Information SystemITIS"))
 myTROccCiteObject@cleanedTaxonomy
 
 ## ----simple_load--------------------------------------------------------------
@@ -79,7 +81,8 @@ treeFile <- system.file("extdata/Fish_12Tax_time_calibrated.tre", package='occCi
 phylogeny <- ape::read.nexus(treeFile)
 tree <- ape::extract.clade(phylogeny, 18)
 #Query databases for names
-myPhyOccCiteObject <- studyTaxonList(x = tree, datasources = "NCBI")
+myPhyOccCiteObject <- studyTaxonList(x = tree, 
+                                     datasources = "National Center for Biotechnology Information")
 #Query GBIF for occurrence data
 myPhyOccCiteObject <- occQuery(x = myPhyOccCiteObject, 
                             datasources = "gbif",

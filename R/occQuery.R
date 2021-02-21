@@ -80,7 +80,7 @@ occQuery <- function(x = NULL,
   on.exit(setwd(oldwd))
 
   #Error check input x.
-  if (!is(x, "occCiteData") && !is.vector(x)){
+  if (!is(x, "occCiteData") & !is.vector(x)){
     warning("Input x is not of class 'occCiteData', nor is it a vector. Input x must be result of a studyTaxonList() search OR a vector with a list of taxon names.\n")
     return(NULL)
   }
@@ -151,7 +151,8 @@ occQuery <- function(x = NULL,
   searchTaxa <- as.character(queryResults@cleanedTaxonomy$`Best Match`)
 
   #Check to make sure there was a taxon match
-  if(grepl(pattern = "No match", x = paste0(searchTaxa, collapse = "")) | is.null(searchTaxa)){
+  if(grepl(pattern = "No match",
+           x = paste0(searchTaxa, collapse = "")) | is.null(searchTaxa)){
     warning("There was no taxonomic match. Search cancelled.\n")
     return(NULL)
   }
@@ -166,7 +167,7 @@ occQuery <- function(x = NULL,
       for(i in 1:length(searchTaxa)){
         #Gets *all* downloaded records
         temp <- gbifRetriever(searchTaxa[[i]])
-        temp[[1]] <- GBIFtableCleanup(temp[[1]])
+        temp$OccurrenceTable <- GBIFtableCleanup(temp$OccurrenceTable)
         gbifResults[[i]] <- temp
       }
       setwd(currentWD)
@@ -174,9 +175,9 @@ occQuery <- function(x = NULL,
     else{
       for (i in searchTaxa){
         temp <- getGBIFpoints(taxon = i,
-                              GBIFLogin = GBIFLogin,
-                              GBIFDownloadDirectory = GBIFDownloadDirectory,
-                              checkPreviousGBIFDownload = checkPreviousGBIFDownload)
+                      GBIFLogin = GBIFLogin,
+                      GBIFDownloadDirectory = GBIFDownloadDirectory,
+                      checkPreviousGBIFDownload = checkPreviousGBIFDownload)
         temp[[1]] <- GBIFtableCleanup(temp[[1]])
         gbifResults[[i]] <- temp
       }

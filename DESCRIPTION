@@ -1,7 +1,7 @@
 Package: occCite
 Type: Package
 Title: Querying and Managing Large Biodiversity Occurrence Datasets
-Version: 0.4.5
+Version: 0.4.6
 Authors@R: c(
   person(given = "Hannah L.", family = "Owens", ,"hannah.owens@gmail.com", role=c("aut","cre"),
     comment = c(ORCID = "0000-0003-0071-1745")),
@@ -41,6 +41,6 @@ Imports: bib2df, BIEN, bit64, dplyr, ape, lubridate, methods, rgbif (>=
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2020-11-27 08:42:17 UTC; Hannah
+Packaged: 2021-02-02 13:07:19 UTC; Hannah
 Repository: CRAN
-Date/Publication: 2020-11-28 15:20:06 UTC
+Date/Publication: 2021-02-21 17:00:06 UTC

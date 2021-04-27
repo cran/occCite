@@ -17,7 +17,7 @@ logging in to GBIF.}
 }
 \value{
 An object of class \code{\link{GBIFLogin}} containing the user's
- GBIF login data.
+GBIF login data.
 }
 \description{
 Takes users GBIF login particulars and turns it
@@ -27,15 +27,19 @@ GBIF. You MUST ALREADY HAVE AN ACCOUNT at \href{http://gbif.org/}{GBIF}.
 \examples{
 ## Inputting user particulars
 \dontrun{
-myLogin <- GBIFLoginManager(user = "theWoman",
-                            email = "ireneAdler@laScala.org",
-                            pwd = "sh3r")
+myLogin <- GBIFLoginManager(
+  user = "theWoman",
+  email = "ireneAdler@laScala.org",
+  pwd = "sh3r"
+)
 }
 
 \dontrun{
 ## Can also be mined from your system environment
-myLogin <- GBIFLoginManager(user = NULL,
-                            email = NULL, pwd = NULL)
+myLogin <- GBIFLoginManager(
+  user = NULL,
+  email = NULL, pwd = NULL
+)
 }
 
 }

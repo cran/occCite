@@ -12,9 +12,9 @@ map.}
 
 \item{...}{Additional arguments affecting how the formatted
 citation document is produced.
-`bySpecies`: Logical; setting to `TRUE` generates the desired
+\code{bySpecies}: Logical; setting to \code{TRUE} generates the desired
 plots for each species.
-`plotTypes`: The type of plot to be generated; "yearHistogram",
+\code{plotTypes}: The type of plot to be generated; "yearHistogram",
 "source", and/or "aggregator".}
 }
 \value{
@@ -29,7 +29,8 @@ data sources, waffle::waffle plot of data aggregators.
 }
 \examples{
 data(myOccCiteObject)
-plot(x = myOccCiteObject, bySpecies = FALSE,
-               plotTypes = c("yearHistogram", "source", "aggregator"))
-
+plot(
+  x = myOccCiteObject, bySpecies = FALSE,
+  plotTypes = c("yearHistogram", "source", "aggregator")
+)
 }

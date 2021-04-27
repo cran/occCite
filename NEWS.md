@@ -2,9 +2,14 @@
 
 * Ongoing development
 
+# occCite 0.4.7
+
+* Internal logic made more robust to various error scenarios.
+* Now warns user if no taxonomic matches exist for a given name (but doesn't crash!).
+
 # occCite 0.4.6
 
-* Taxonomic sources were renames in the Global Names Resolver.
+* Taxonomic sources were renamed in the Global Names Resolver.
 
 # occCite 0.4.5
 

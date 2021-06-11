@@ -17,7 +17,7 @@
 <meta name="author" content="Vijay Barve" />
 <meta name="author" content="Robert Guralnick" />
 
-<meta name="date" content="2021-04-27" />
+<meta name="date" content="2021-06-11" />
 
 <title>Simple execution of occurrence searches and citation generation</title>
 
@@ -150,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="author">Jamie M. Kass</h4>
 <h4 class="author">Vijay Barve</h4>
 <h4 class="author">Robert Guralnick</h4>
-<h4 class="date">2021-04-27</h4>
+<h4 class="date">2021-06-11</h4>
 
 
 <div id="TOC">
@@ -267,29 +267,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>After doing a search for occurrence points, you can use <code>occCitation()</code> to generate citations for primary biodiversity databases, as well as database aggregators. <strong>Note:</strong> Currently, GBIF and BIEN are the only aggregators for which citations are supported.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Get citations</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mySimpleOccCitations <span class="ot">&lt;-</span> <span class="fu">occCitation</span>(mySimpleOccCiteObject)</span></code></pre></div>
+<pre><code>## [1] &quot;NOTE: 1 BIEN dataset(s) for Protea cynaroides is/are missing citation data. Key(s) missing citations are: 280. Source(s) are identified as: MO.&quot;</code></pre>
 <p>Here is a simple way of generating a formatted citation document from the results of <code>occCitation()</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mySimpleOccCitations)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mySimpleOccCitations)</span></code></pre></div>
 <pre><code>## Writing 5 Bibtex entries ... OK
 ## Results written to file &#39;temp.bib&#39;</code></pre>
 <pre><code>## AFFOUARD A, JOLY A, LOMBARDO J, CHAMP J, GOEAU H, BONNET P (2020). Pl@ntNet automatically identified occurrences. Version 1.2. Pl@ntNet. https://doi.org/10.15468/mma2ec. Accessed via GBIF on 2020-11-23.
 ## AFFOUARD A, JOLY A, LOMBARDO J, CHAMP J, GOEAU H, BONNET P (2020). Pl@ntNet observations. Version 1.2. Pl@ntNet. https://doi.org/10.15468/gtebaa. Accessed via GBIF on 2020-11-23.
-## Cameron E, Auckland Museum A M (2021). Auckland Museum Botany Collection. Version 1.59. Auckland War Memorial Museum. https://doi.org/10.15468/mnjkvv. Accessed via GBIF on 2020-11-23.
+## CEN Limousin &amp; MAÃ‡ONNERIE Delphine. Accessed via BIEN on NA.
+## Cameron E, Auckland Museum A M (2021). Auckland Museum Botany Collection. Version 1.61. Auckland War Memorial Museum. https://doi.org/10.15468/mnjkvv. Accessed via GBIF on 2020-11-23.
 ## Capers R (2014). CONN. University of Connecticut. https://doi.org/10.15468/w35jmd. Accessed via GBIF on 2020-11-23.
 ## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2021). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.5.2. https://CRAN.R-project.org/package=rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
+## Department of Agriculture and Fisheries. Accessed via BIEN on NA.
 ## Fatima Parker-Allie, Ranwashe F (2018). PRECIS. South African National Biodiversity Institute. https://doi.org/10.15468/rckmn2. Accessed via GBIF on 2020-11-23.
-## MNHN, Chagnoux S (2021). The vascular plants collection (P) at the Herbarium of the Muséum national d&#39;Histoire Naturelle (MNHN - Paris). Version 69.206. MNHN - Museum national d&#39;Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2020-11-23.
-## MNHN. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
+## ITA327. Accessed via BIEN on NA.
+## MNHN, Chagnoux S (2021). The vascular plants collection (P) at the Herbarium of the Muséum national d&#39;Histoire Naturelle (MNHN - Paris). Version 69.213. MNHN - Museum national d&#39;Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2020-11-23.
 ## Maitner, B. (2020). BIEN: Tools for Accessing the Botanical Information and Ecology. R package version 1.2.4. https://CRAN.R-project.org/package=BIEN.
-## Missouri Botanical Garden,Herbarium. Accessed via BIEN on NA.
-## NSW. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
-## Owens, H., Merow, C., Maitner, B., Kass, J., Barve, V., Guralnick, R. (2021). occCite: Querying and Managing Large Biodiversity Occurrence Datasets. R package version 0.4.7. https://CRAN.R-project.org/package=occCite.
+## NA. Accessed via BIEN on NA.
+## Owens, H., Merow, C., Maitner, B., Kass, J., Barve, V., Guralnick, R. (2021). occCite: Querying and Managing Large Biodiversity Occurrence Datasets. R package version 0.4.8. https://CRAN.R-project.org/package=occCite.
 ## R Core Team. (2020). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
-## SANBI. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
 ## Senckenberg (2020). African Plants - a photo guide. https://doi.org/10.15468/r9azth. Accessed via GBIF on 2020-11-23.
 ## Solomon J, Stimmel H (2021). Tropicos Specimen Data. Missouri Botanical Garden. https://doi.org/10.15468/hja69f. Accessed via GBIF on 2020-11-23.
 ## Tela Botanica. Carnet en Ligne. https://doi.org/10.15468/rydcn2. Accessed via GBIF on 2020-11-23.
-## UConn. https://doi.org/10.15468/dl.fpwlzt. Accessed via BIEN on 2018-08-14.
+## UPRM. Accessed via BIEN on NA.
 ## Ueda K (2021). iNaturalist Research-grade Observations. iNaturalist.org. https://doi.org/10.15468/ab3s5x. Accessed via GBIF on 2020-11-23.
 ## de Vries H, Lemmens M. Observation.org, Nature data from around the World. Observation.org. https://doi.org/10.15468/5nilie. Accessed via GBIF on 2020-11-23.
 ## naturgucker.de. naturgucker. https://doi.org/10.15468/uc1apo. Accessed via GBIF on 2020-11-23.</code></pre>
@@ -298,12 +299,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Simple Taxonomic Rectification</h2>
 <p>In the simplest of searches, such as the one above, the taxonomy of your input species name is automatically rectified through the <code>occCite</code> function <code>studyTaxonList()</code> using <code>gnr_resolve()</code> from the <code>taxize</code> <code>R</code> package. If you would like to change the source of the taxonomy being used to rectify your species names, you can specify as many taxonomic repositories as you like from the Global Names Index (GNI). The complete list of GNI repositories can be found <a href="http://gni.globalnames.org/data_sources">here</a>.</p>
 <p><code>studyTaxonList()</code> chooses the taxonomic names closest to those being input and documents which taxonomic repositories agreed with those names. <code>studyTaxonList()</code> instantiates an <code>occCiteData</code> object the same way <code>occQuery()</code> does. This object can be passed into <code>occQuery()</code> to perform your occurrence data search.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Rectify taxonomy</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>myTROccCiteObject <span class="ot">&lt;-</span> <span class="fu">studyTaxonList</span>(<span class="at">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>, </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">datasources =</span> <span class="fu">c</span>(<span class="st">&quot;National Center for Biotechnology Information&quot;</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">&quot;Encyclopedia of Life&quot;</span>, </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">&quot;Integrated Taxonomic Information SystemITIS&quot;</span>))</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>myTROccCiteObject<span class="sc">@</span>cleanedTaxonomy</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Rectify taxonomy</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>myTROccCiteObject <span class="ot">&lt;-</span> <span class="fu">studyTaxonList</span>(<span class="at">x =</span> <span class="st">&quot;Protea cynaroides&quot;</span>, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">datasources =</span> <span class="fu">c</span>(<span class="st">&quot;National Center for Biotechnology Information&quot;</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">&quot;Encyclopedia of Life&quot;</span>, </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">&quot;Integrated Taxonomic Information SystemITIS&quot;</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>myTROccCiteObject<span class="sc">@</span>cleanedTaxonomy</span></code></pre></div>
 <pre><code>##          Input Name        Best Match
 ## 1 Protea cynaroides Protea cynaroides
 ##                                        Taxonomic Databases w/ Matches

@@ -1,6 +1,6 @@
-# occCite v0.5-alpha
+# occCite 0.4.8
 
-* Ongoing development
+* Fixed problem with occCitation that caused an error when dataset keys had no associated BIEN data.
 
 # occCite 0.4.7
 

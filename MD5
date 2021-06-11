@@ -1,6 +1,6 @@
-cb81c2231c5e79333e12e0302e2f0075 *DESCRIPTION
+f930bd99b9af03b631eed3b36291f782 *DESCRIPTION
 4d57cf1670b935bf774f6a1713375548 *NAMESPACE
-63741ebc0e846d62162e74013b8f3353 *NEWS.md
+e97b21c6e5027294ddaddd923b2b5e2a *NEWS.md
 00add7bf4c094bfb752abda315e5465c *R/GBIFLogin.R
 28cc3484dfe0c8ceda8d997fed7be37d *R/GBIFLoginManager.R
 e6dbb7f4932812f4139a651c696fe7df *R/GBIFtableCleanup.R
@@ -8,7 +8,7 @@ e6dbb7f4932812f4139a651c696fe7df *R/GBIFtableCleanup.R
 cfded5bb181eeb1222119729ca4839f1 *R/gbifRetriever.R
 0b02d32ac4984b05a1d91e34340f4179 *R/getBIENpoints.R
 c222164412f2a47c45a4de1638ca7341 *R/getGBIFpoints.R
-a7657f47191ad26337c96e15b3c588ce *R/occCitation.R
+37d3662b5cc789e80f380030426ac799 *R/occCitation.R
 341cb7efb252a71c739901b37c48c7f3 *R/occCiteCitation.R
 b27a5737c8b8ffc380aef3514f909c5a *R/occCiteData.R
 d99eb08282e7c5f1c74eabafaeaac467 *R/occCitePrint.R
@@ -21,13 +21,13 @@ f690af90582486277170a4f6e0dd5472 *R/prevGBIFdownload.R
 8f37ac8e8d12e18794cd46f0141e95d4 *R/taxonRectification.R
 1c01d103ec977137bc2e58787bc0b05f *build/vignette.rds
 046ac2cfc584d3a3c5a1a00e8129a1b2 *data/myOccCiteObject.RData
-15fbb33628e6233ea320f00d219731d3 *inst/CITATION
+3f50d7f84a7fc970816d1a215cfcb3e2 *inst/CITATION
 369ab7f45041df30a03ef7a3c1f9d3da *inst/doc/Advanced.R
 5fa239fede69352848bc4dfdc52d77a5 *inst/doc/Advanced.Rmd
-ce80a8fc10ace1b78c1acb095835af5a *inst/doc/Advanced.html
+1c70df9dc1ecec6c254ca0591ba09ed4 *inst/doc/Advanced.html
 610acdcb680e4637b2121c426f23bce4 *inst/doc/Simple.R
 594a05a9be78e086d565fc4235723cfa *inst/doc/Simple.Rmd
-5351fffc933c54a533341b62749daf60 *inst/doc/Simple.html
+a39580e87a3d8170c4620612195580f0 *inst/doc/Simple.html
 bb03e2747cf359d9ed3f09f46ab5b54b *inst/extdata/Fish_12Tax_time_calibrated.tre
 30d9d8a95d4f354498abc647a2afd08b *inst/extdata/Istiompax_indica/0006567-190621201848488.zip
 8fc7d35b6b882132bb585488d7abc906 *inst/extdata/Kajikia_albida/0006571-190621201848488.zip

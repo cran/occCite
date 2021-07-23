@@ -1,3 +1,9 @@
+# occCite 0.4.9
+
+* In gbifRetriever, changed rgbif::name_suggests to rgbif::name_backbone. More robust for our purposes.
+* Now fills in "Dataset" column in GBIF search results from GBIF citation information.
+* No longer throws out GBIF occurrences with missing day and month information.
+
 # occCite 0.4.8
 
 * Fixed problem with occCitation that caused an error when dataset keys had no associated BIEN data.

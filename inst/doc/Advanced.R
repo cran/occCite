@@ -29,10 +29,10 @@ library(ape)
 #Get tree
 treeFile <- system.file("extdata/Fish_12Tax_time_calibrated.tre", package='occCite')
 phylogeny <- ape::read.nexus(treeFile)
-tree <- ape::extract.clade(phylogeny, 18)
+tree <- ape::extract.clade(phylogeny, 21)
 #Query databases for names
 myPhyOccCiteObject <- studyTaxonList(x = tree, 
-                                     datasources = "National Center for Biotechnology Information")
+                                     datasources = "GBIF Backbone Taxonomy")
 #Query GBIF for occurrence data
 myPhyOccCiteObject <- occQuery(x = myPhyOccCiteObject, 
                             datasources = "gbif",
@@ -46,7 +46,7 @@ summary(myPhyOccCiteObject)
 plot(myPhyOccCiteObject)
 
 ## ----plotting phylogenetic search by species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="33%"----
-plot(myPhyOccCiteObject, bySpecies = T)
+plot(myPhyOccCiteObject, bySpecies = T, plotTypes = c("yearHistogram", "source"))
 
 ## ----getting_citations_for_a_multispecies_search, echo=T----------------------
 #Get citations

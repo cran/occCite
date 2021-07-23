@@ -23,11 +23,7 @@ gbifRetriever <- function(taxon = NULL) {
     pattern = "(\\w+\\s\\w+)"
   ) # Remove problem characters, i.e. "æ"
 
-  taxon_key <- as.numeric(rgbif::name_suggest(
-    q = cleanTaxon,
-    fields = "key",
-    rank = "species"
-  )$data[1])
+  taxon_key <- as.numeric(rgbif::name_backbone(cleanTaxon)$usageKey)
   if (is.null(taxon_key)) {
     warning(paste0(" Taxon ", taxon, " could not be resolved."))
     return(NULL)
@@ -90,6 +86,9 @@ gbifRetriever <- function(taxon = NULL) {
     rawOccs <- res
     occFromGBIF <- tabGBIF(res, taxon = taxon)
     occMetadata <- rgbif::occ_download_meta(keys[[newestTaxonomicMatch]])
+
+    # Fills out "Dataset" column from citation information
+
 
     # Preparing list for return
     outlist <- list()

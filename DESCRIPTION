@@ -1,7 +1,7 @@
 Package: occCite
 Type: Package
 Title: Querying and Managing Large Biodiversity Occurrence Datasets
-Version: 0.4.8
+Version: 0.4.9
 Authors@R: c(
   person(given = "Hannah L.", family = "Owens", ,"hannah.owens@gmail.com", role=c("aut","cre"),
     comment = c(ORCID = "0000-0003-0071-1745")),
@@ -33,13 +33,14 @@ Encoding: UTF-8
 LazyData: true
 Language: en-US
 Depends: R (>= 3.5.0)
-Suggests: rmarkdown, remotes, RefManageR, testthat, covr, ape, knitr
-Imports: bib2df, BIEN, bit64, dplyr, lubridate, methods, rgbif (>=
-        3.1), taxize, stringr, stats, leaflet, htmltools, ggplot2,
-        rlang, tidyr, RPostgreSQL, RColorBrewer, viridis, DBI, waffle
+Suggests: rmarkdown, remotes, RefManageR, testthat, covr, ape, bit64,
+        knitr
+Imports: bib2df, BIEN, dplyr, lubridate, methods, rgbif (>= 3.1),
+        taxize, stringr, stats, leaflet, htmltools, ggplot2, rlang,
+        tidyr, RPostgreSQL, RColorBrewer, viridis, DBI, waffle
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2021-06-11 11:40:33 UTC; Hannah
+Packaged: 2021-07-23 14:00:40 UTC; Hannah
 Repository: CRAN
-Date/Publication: 2021-06-11 15:10:06 UTC
+Date/Publication: 2021-07-23 15:10:02 UTC

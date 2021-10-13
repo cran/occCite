@@ -1,3 +1,12 @@
+# occCite 0.5.0.9000
+
+* Development version
+
+# occCite 0.5.0
+
+* Legends for source waffle plots are now wrapped to enhance readability.
+* Now fails more gracefully if servers cannot be reached.
+
 # occCite 0.4.9
 
 * In gbifRetriever, changed rgbif::name_suggests to rgbif::name_backbone. More robust for our purposes.

@@ -3,6 +3,8 @@ context("Verifies performance of taxonRectification")
 library(occCite)
 
 test_that("functions on which it depends function as necessary", {
+  skip_if(httr::http_error("https://resolver.globalnames.org/data_sources.json"))
+
   sources <- taxize::gnr_datasources()
 
   expect_true("data.frame" %in% class(sources))
@@ -24,6 +26,8 @@ test_that("functions on which it depends function as necessary", {
 })
 
 test_that("taxonRectification performs as expected", {
+  skip_if(httr::http_error("https://resolver.globalnames.org/data_sources.json"))
+
   testResult <- taxonRectification(
     taxName = "Buteo buteo hartedi",
     datasources = "National Center for Biotechnology Information"
@@ -38,4 +42,8 @@ test_that("taxonRectification performs as expected", {
   expect_true(testResult$`Input Name`[1] == "Buteo buteo hartedi")
   expect_true(testResult$`Best Match`[1] == "Buteo buteo harterti")
   expect_true(testResult$`Searched Taxonomic Databases w/ Matches` == "National Center for Biotechnology Information")
+
+  expect_warning(taxonRectification(taxName = "Buteo buteo hartedi", datasources = "cheese"))
+  expect_warning(taxonRectification(taxName = "Buteo buteo hartedi", datasources = NULL))
+  expect_warning(taxonRectification(taxName = "cheese", datasources = "National Center for Biotechnology Information"))
 })

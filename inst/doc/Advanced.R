@@ -42,10 +42,10 @@ myPhyOccCiteObject <- occQuery(x = myPhyOccCiteObject,
 # What does a multispecies query look like?
 summary(myPhyOccCiteObject)
 
-## ----plotting all species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="33%"----
+## ----plotting all species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="100%"----
 plot(myPhyOccCiteObject)
 
-## ----plotting phylogenetic search by species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="33%"----
+## ----plotting phylogenetic search by species, eval=T, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide', fig.hold='hold', out.width="100%"----
 plot(myPhyOccCiteObject, bySpecies = T, plotTypes = c("yearHistogram", "source"))
 
 ## ----getting_citations_for_a_multispecies_search, echo=T----------------------

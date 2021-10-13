@@ -5,6 +5,9 @@
 #'
 #' @param taxon A single plant species or vector of plant species
 #'
+#' @details `getBIENpoints` only returns all BIEN records, including non-
+#' native and cultivated occurrences.
+#'
 #' @return A list containing \enumerate{ \item a data frame of occurrence data;
 #' \item a list containing: i notes on usage, ii bibtex citations,
 #' and iii acknowledgment information; \item a data frame containing
@@ -19,11 +22,26 @@
 #'
 #' @export
 getBIENpoints <- function(taxon) {
-  occs <- BIEN::BIEN_occurrence_species(
-    species = taxon, cultivated = T,
-    only.new.world = F, native.status = F,
-    collection.info = T, natives.only = F
+  # BIEN can't handle taxonomic authority in the search string.
+  taxon <- stringr::str_extract(
+    string = taxon,
+    pattern = "(\\w+\\s\\w+)"
   )
+
+  tryCatch(expr = try(occs <- BIEN::BIEN_occurrence_species(species = taxon,
+                                                            cultivated = T,
+                                                            only.new.world = F,
+                                                            native.status = F,
+                                                            collection.info = T,
+                                                            natives.only = F),
+                      silent = T),
+           error = function(e) {
+             message(paste("BIEN unreachable at the moment, please try again later. \n"))
+           })
+
+  if(!exists("occs")){
+    return(invisible(NULL))
+  }
 
   if (nrow(occs) == 0) {
     print(paste("There are no BIEN points for ",

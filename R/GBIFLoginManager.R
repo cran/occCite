@@ -37,20 +37,26 @@
 GBIFLoginManager <- function(user = NULL, email = NULL, pwd = NULL) {
   # Error checking inputs
   if (!is.null(user) & class(user) != "character") {
-    warning(paste0("Input user name is invalid;\n",
-                   "it must be a vector of class 'character'.\n"))
+    warning(paste0(
+      "Input user name is invalid;\n",
+      "it must be a vector of class 'character'.\n"
+    ))
     return(NULL)
   }
 
   if (!is.null(email) & class(email) != "character") {
-    warning(paste0("Input email is invalid;\n",
-                   "it must be a vector of class 'character'.\n"))
+    warning(paste0(
+      "Input email is invalid;\n",
+      "it must be a vector of class 'character'.\n"
+    ))
     return(NULL)
   }
 
   if (!is.null(pwd) & class(pwd) != "character") {
-    warning(paste0("Input password is invalid;\n",
-            "it must be a vector of class 'character'.\n"))
+    warning(paste0(
+      "Input password is invalid;\n",
+      "it must be a vector of class 'character'.\n"
+    ))
     return(NULL)
   }
 
@@ -60,26 +66,29 @@ GBIFLoginManager <- function(user = NULL, email = NULL, pwd = NULL) {
   pwd <- check_pwd(pwd)
 
   # Test login
-  tryCatch(expr = test <- try(rgbif::occ_download(user = user,
-                                                  email = email,
-                                                  pwd = pwd,
-                                                  rgbif::pred("catalogNumber", 217880)),
-                              silent = T)
-,
-           error = function(e) {
-             message(paste("GBIF unreachable at the moment, please try again later. \n"))
-           })
+  tryCatch(
+    expr = test <- try(rgbif::occ_download_list(
+      user = user,
+      pwd = pwd,
+      limit = 1
+    ),
+    silent = T
+    ),
+    error = function(e) {
+      message(paste("GBIF unreachable; please try again later. \n"))
+    }
+  )
 
-  if(!exists("test")){
-    return(invisible(NULL))
-  }
-
-  if (class(test) != "occ_download") {
-    warning("GBIF user login data incorrect.\n")
+  if (is(test, "try-error")) {
+    if (grepl(unlist(test)[1], pattern = "401")) {
+      warning("GBIF user login data incorrect.\n")
+    } else {
+      warning("GBIF unreachable; please try again later. \n")
+    }
     return(NULL)
   }
 
-  # Populating an instance of class occCiteData
+  # Populating an instance of class GBIFLogin
   loginInstance <- methods::new("GBIFLogin",
     username = user,
     email = email,
@@ -92,15 +101,18 @@ GBIFLoginManager <- function(user = NULL, email = NULL, pwd = NULL) {
 # (adapted from occ_download in rgbif)
 check_user <- function(x) {
   z <- if (is.null(x)) Sys.getenv("GBIF_USER", "") else x
-  if (z == "") getOption("gbif_user", stop("supply a username")) else z
+  if (z == "") getOption("gbif_user",
+                         stop("supply a username")) else z
 }
 
 check_pwd <- function(x) {
   z <- if (is.null(x)) Sys.getenv("GBIF_PWD", "") else x
-  if (z == "") getOption("gbif_pwd", stop("supply a password")) else z
+  if (z == "") getOption("gbif_pwd",
+                         stop("supply a password")) else z
 }
 
 check_email <- function(x) {
   z <- if (is.null(x)) Sys.getenv("GBIF_EMAIL", "") else x
-  if (z == "") getOption("gbif_email", stop("supply an email address")) else z
+  if (z == "") getOption("gbif_email",
+                         stop("supply an email address")) else z
 }

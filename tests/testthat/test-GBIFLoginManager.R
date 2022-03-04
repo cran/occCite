@@ -5,24 +5,31 @@ library(occCite)
 test_that("GBIFLoginManager error messaging behaves as expected", {
   skip_on_cran()
 
+  test <- try(rgbif::occ_count(country = "DK"),
+    silent = T
+  )
+  skip_if(class(test) != "numeric", "GBIF connection unsuccessful")
+
   expect_warning(
-    GBIFLoginManager("testing", "the", "login"),
-    "GBIF user login data incorrect."
+    GBIFLoginManager("testing", "the", "login")
   )
 })
 
 test_that("GBIFLoginManager actually picks up login information", {
-  skip_if(
-    nchar(Sys.getenv("GBIF_EMAIL")) < 1,
-    "GBIF Login information not available"
-  )
+  skip_on_cran()
 
-  GBIFLogin <- GBIFLoginManager()
-  test <- try(rgbif::occ_download(
+  test <- try(rgbif::occ_count(country = "DK"),
+    silent = T
+  )
+  skip_if(class(test) != "numeric", "GBIF connection unsuccessful")
+
+  GBIFLogin <- try(GBIFLoginManager(), silent = T)
+  skip_if(is(GBIFLogin, "try-error"),
+          message = "GBIF login unsuccessful")
+
+  test <- try(rgbif::occ_download_list(
     user = GBIFLogin@username,
-    email = GBIFLogin@email,
-    pwd = GBIFLogin@pwd,
-    rgbif::pred("catalogNumber", 217880)
+    pwd = GBIFLogin@pwd, limit = 1,
   ),
   silent = T
   )

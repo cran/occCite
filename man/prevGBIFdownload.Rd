@@ -4,10 +4,10 @@
 \alias{prevGBIFdownload}
 \title{Download previously-prepared GBIF data sets}
 \usage{
-prevGBIFdownload(taxonKey = "No key", GBIFLogin)
+prevGBIFdownload(taxonKey, GBIFLogin)
 }
 \arguments{
-\item{taxonKey}{A taxon key as returned from \code{rgbif::name_suggest()}.}
+\item{taxonKey}{A taxon key as returned from `rgbif::name_suggest()`.}
 
 \item{GBIFLogin}{An object of class \code{\link{GBIFLogin}} to log in to
 GBIF to begin the download.}
@@ -27,8 +27,10 @@ GBIFLogin <- GBIFLoginManager(
   email = "ireneAdler@laScala.org",
   pwd = "sh3r"
 )
-taxKey <- rgbif::name_suggest(q = "Protea cynaroides",
-                              rank = "species")$key[1]
+taxKey <- rgbif::name_suggest(
+  q = "Protea cynaroides",
+  rank = "species"
+)$key[1]
 prevGBIFdownload(
   taxonKey = taxKey,
   GBIFLogin = myGBIFLogin

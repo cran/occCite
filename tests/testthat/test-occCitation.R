@@ -24,6 +24,13 @@ test_that("inputs to occCitation are as expected", {
 test_that("outputs for GBIF results are as expected", {
   skip_on_cran()
 
+  test <- try(rgbif::occ_count(country = "DK"),
+    silent = T
+  )
+  skip_if(class(test) != "numeric", "GBIF connection unsuccessful")
+
+  expect_warning(occCitation())
+
   data("myOccCiteObject")
   myOccCiteObject@occResults[[1]]$BIEN <- NULL
   testResults <- occCitation(myOccCiteObject)
@@ -63,6 +70,8 @@ test_that("outputs for GBIF results are as expected", {
 })
 
 test_that("outputs for BIEN results are as expected", {
+  skip_if(!curl::has_internet(), "internet connection unsuccessful")
+
   data("myOccCiteObject")
   myOccCiteObject@occResults[[1]]$GBIF <- NULL
   testResults <- occCitation(myOccCiteObject)
@@ -99,4 +108,12 @@ test_that("outputs for BIEN results are as expected", {
   expect_true("Number of Occurrences"
   %in% names(testResults$occCitationResults[[1]]))
   expect_true(is.numeric(testResults$occCitationResults[[1]]$`Number of Occurrences`))
+})
+
+test_that("warnings work when there is no internet", {
+  skip_if(curl::has_internet(), "internet connection established")
+
+  data("myOccCiteObject")
+  myOccCiteObject@occResults[[1]]$GBIF <- NULL
+  expect_warning(occCitation(myOccCiteObject))
 })

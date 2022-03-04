@@ -4,14 +4,19 @@ library(occCite)
 knitr::opts_chunk$set(echo = TRUE, error = TRUE)
 knitr::opts_knit$set(root.dir = system.file('extdata/', package='occCite'))
 
-## ----simple_load--------------------------------------------------------------
-# Simple load
-myOldOccCiteObject <- occQuery(x = "Protea cynaroides", 
-                                  datasources = c("gbif", "bien"), 
-                                  GBIFLogin = NULL, 
-                                  GBIFDownloadDirectory = system.file('extdata/', package='occCite'),
-                                  loadLocalGBIFDownload = T,
-                                  checkPreviousGBIFDownload = F)
+## ----simple_search, eval=F----------------------------------------------------
+#  # Simple search
+#  myOldOccCiteObject <- occQuery(x = "Protea cynaroides",
+#                                    datasources = c("gbif", "bien"),
+#                                    GBIFLogin = GBIFLogin,
+#                                    GBIFDownloadDirectory =
+#                                      system.file('extdata/', package='occCite'),
+#                                    checkPreviousGBIFDownload = T)
+
+## ----simple_search sssssecret cooking show, eval=T, echo = F------------------
+# Simple search
+data(myOccCiteObject)
+myOldOccCiteObject <- myOccCiteObject
 
 ## ----simple_search_loaded_GBIF_results----------------------------------------
 #GBIF search results

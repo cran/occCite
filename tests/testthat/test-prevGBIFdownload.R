@@ -9,11 +9,12 @@ test_that("download list retrievable from GBIF.org", {
     "GBIF Login information not available"
   )
 
-  test <- try(rgbif::occ_download(
+  GBIFLogin <- try(GBIFLoginManager(), silent = T)
+  skip_if(is(GBIFLogin, "try-error"))
+
+  test <- try(rgbif::occ_download_list(
     user = GBIFLogin@username,
-    email = GBIFLogin@email,
-    pwd = GBIFLogin@pwd,
-    rgbif::pred("catalogNumber", 217880)
+    pwd = GBIFLogin@pwd, limit = 1,
   ),
   silent = T
   )
@@ -31,22 +32,18 @@ test_that("download list retrievable from GBIF.org", {
 
 test_that("download list parseable by prevGBIFdownload", {
   skip_on_cran()
-  skip_if(
-    nchar(Sys.getenv("GBIF_EMAIL")) < 1,
-    "GBIF Login information not available"
-  )
 
-  test <- try(rgbif::occ_download(
+  GBIFLogin <- try(GBIFLoginManager(), silent = T)
+  skip_if(is(GBIFLogin, "try-error"), "GBIF login unsuccessful")
+
+  test <- try(rgbif::occ_download_list(
     user = GBIFLogin@username,
-    email = GBIFLogin@email,
-    pwd = GBIFLogin@pwd,
-    rgbif::pred("catalogNumber", 217880)
+    pwd = GBIFLogin@pwd, limit = 1,
   ),
   silent = T
   )
   skip_if(class(test) != "occ_download", "GBIF login unsuccessful")
 
-  GBIFLogin <- GBIFLoginManager()
   dl <- rgbif::occ_download_list(
     user = GBIFLogin@username,
     pwd = GBIFLogin@pwd,

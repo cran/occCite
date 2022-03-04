@@ -36,58 +36,75 @@
 #'   )
 #' )
 #' phylogeny <- ape::extract.clade(phylogeny, 18)
-#' studyTaxonList(x = phylogeny,
-#'                datasources = c("GBIF Backbone Taxonomy"))
+#' studyTaxonList(
+#'   x = phylogeny,
+#'   datasources = c("GBIF Backbone Taxonomy")
+#' )
 #' @export
 studyTaxonList <- function(x = NULL,
                            datasources = "GBIF Backbone Taxonomy") {
   # Error check inputs (x).
-  if (!class(x) == "phylo" & !(is.vector(class(x)) && class(x) == "character")) {
-    warning(message("Target input invalid. Input must be of class\n",
-                   "'phylo' or a vector of class 'character'.\n"))
+  if (!is(x, "phylo") &
+    !(is.vector(class(x)) &&
+      is(x, "character"))) {
+    warning(message(
+      "Target input invalid. Input must be of class\n",
+      "'phylo' or a vector of class 'character'.\n"
+    ))
     return(NULL)
-  }
-  else if (is.vector(class(x)) && class(x) == "character") {
+  } else if (is.vector(class(x)) && is(x, "character")) {
     targets <- x
     dataFrom <- "User-supplied list of taxa." # Keeping track of metadata
-  }
-  else if (class(x) == "phylo") {
+  } else if (is(x, "phylo")) {
     targets <- x$tip.label
     dataFrom <- "User-supplied phylogeny." # Keeping track of metadata
   }
 
   # Building the results table
   resolvedNames <- data.frame()
-  for (i in 1:length(targets)) {
-    tryCatch(expr = newResName <- withCallingHandlers({
-      taxonRectification(
-        taxName = targets[[i]],
-        datasources = datasources)},
-      warning = function(w) {
-        message("handled warning: ", conditionMessage(w))
-        invokeRestart("muffleWarning")}),
-             error = function(e) {
-               message(paste("GNR server unreachable at the moment, please try again later. \n"))
-             })
+  for (i in seq(to = length(targets))) {
+    tryCatch(
+      expr = newResName <- withCallingHandlers(
+        {
+          taxonRectification(
+            taxName = targets[[i]],
+            datasources = datasources
+          )
+        },
+        warning = function(w) {
+          message("handled warning: ", conditionMessage(w))
+          invokeRestart("muffleWarning")
+        }
+      ),
+      error = function(e) {
+        message(paste("GNR server unreachable; please try again later. \n"))
+      }
+    )
 
-    if(!exists("newResName")){
+    if (!exists("newResName")) {
       return(invisible(NULL))
     }
     resolvedNames <- rbind(resolvedNames, newResName)
   }
 
-  colnames(resolvedNames) <- c(
-    "Input Name",
-    "Best Match",
-    "Taxonomic Databases w/ Matches"
-  )
-  resolvedNames <- as.data.frame(resolvedNames)
+  if (ncol(resolvedNames == 3)) {
+    colnames(resolvedNames) <- c(
+      "Input Name",
+      "Best Match",
+      "Taxonomic Databases w/ Matches"
+    )
+    resolvedNames <- as.data.frame(resolvedNames)
 
-  # Populating an instance of class occCiteData
-  occCiteInstance <- methods::new("occCiteData",
-    userQueryType = dataFrom,
-    userSpecTaxonomy = datasources,
-    cleanedTaxonomy = resolvedNames
-  )
-  return(occCiteInstance)
+    # Populating an instance of class occCiteData
+    occCiteInstance <- methods::new("occCiteData",
+      userQueryType = dataFrom,
+      userSpecTaxonomy = datasources,
+      cleanedTaxonomy = resolvedNames
+    )
+    return(occCiteInstance)
+  } else {
+    (
+      return(invisible(NULL))
+    )
+  }
 }

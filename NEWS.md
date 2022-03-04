@@ -1,6 +1,7 @@
-# occCite 0.5.1.9000
+# occCite 0.5.2
 
-* Development version
+* Resubmission after archiving due to dependency archiving.
+* Functions that rely on getting data from servers via an internet connection now behave more gracefully and informatively when the server cannot be reached.
 
 # occCite 0.5.1
 

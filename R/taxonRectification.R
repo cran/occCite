@@ -25,16 +25,18 @@
 taxonRectification <- function(taxName = NULL, datasources = NULL) {
 
   # Checks for source connectivity
-  tryCatch(expr = sources <- taxize::gnr_datasources(),
+  tryCatch(
+    expr = sources <- taxize::gnr_datasources(),
     error = function(e) {
-      message(paste("GNR server unreachable at the moment, please try again later. \n"))
-    })
+      message(paste("GNR server unreachable; please try again later. \n"))
+    }
+  )
 
-  if(!exists("sources")){
+  if (!exists("sources")) {
     return(invisible(NULL))
   }
 
-  # Are user-input databases included in list of data sources for Global Names Resolver?
+  # Are user-input databases included in data sources for Global Names Resolver?
   if (!is.null(datasources)) {
     for (db in datasources) {
       notInDB <- character()
@@ -43,9 +45,10 @@ taxonRectification <- function(taxName = NULL, datasources = NULL) {
       }
     }
     if (length(notInDB) != 0) {
-      warning(paste0("Following sources not found in\n",
-                     "Global Names Index source list: ",
-                     paste(notInDB, collapse = ", ")
+      warning(paste0(
+        "Following sources not found in\n",
+        "Global Names Index source list: ",
+        paste(notInDB, collapse = ", ")
       ))
     }
     # Remove invalid sources from datasources
@@ -54,14 +57,16 @@ taxonRectification <- function(taxName = NULL, datasources = NULL) {
 
   # Populating vector of data sources if no valid sources are supplied
   if (length(datasources) == 0) {
-    warning(paste0("No valid taxonomic data sources supplied.\n",
-                   "Populating default list from all available sources."))
+    warning(paste0(
+      "No valid taxonomic data sources supplied.\n",
+      "Populating default list from all available sources."
+    ))
     datasources <- sources$title
   }
 
   # Resolving the user-input taxonomic names
   sourceIDs <- sources$id[sources$title %in% datasources]
-  # Protects against error thrown when giving gnr_resolve a complete list of data sources
+  # Protects from error when gnr_resolve gets complete list of data sources
   if (nrow(sources) == length(sourceIDs)) {
     sourceIDs <- NULL
   }
@@ -74,8 +79,7 @@ taxonRectification <- function(taxName = NULL, datasources = NULL) {
       " is not found in any of the taxonomic data sources specified.",
       sep = ""
     ))
-  }
-  else {
+  } else {
     bestMatch <- temp[order(temp$score), ]$matched_name[1]
     matchingSources <- temp$data_source_title[temp$matched_name == bestMatch]
     taxonomicDatabaseMatches <- paste(matchingSources, collapse = "; ")

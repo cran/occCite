@@ -1,3 +1,7 @@
+# occCite 0.5.3
+
+* Adjustment to testing strategy to comply with CRAN policies.
+
 # occCite 0.5.2
 
 * Resubmission after archiving due to dependency archiving.

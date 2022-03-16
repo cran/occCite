@@ -1,6 +1,6 @@
-c2d567ffb96b20b27e20eeb5ff430bc6 *DESCRIPTION
+d7f57f017de1705d49ee8167aec56f4e *DESCRIPTION
 b4e03e7527404d2aa9548b2e33552c3d *NAMESPACE
-376acc3aff0f2994b14178d81102a159 *NEWS.md
+7c6ce9e58bb02c5dbe72b7183776c078 *NEWS.md
 00add7bf4c094bfb752abda315e5465c *R/GBIFLogin.R
 3c91be975e80c03d13d2b87b81d83ae3 *R/GBIFLoginManager.R
 3788a5037bafcb3b5da48bcc26715941 *R/GBIFtableCleanup.R
@@ -19,16 +19,15 @@ b27a5737c8b8ffc380aef3514f909c5a *R/occCiteData.R
 4bde977820b9420701f13f2fb5c324b0 *R/studyTaxonList.R
 13ffcc2bafdebddc8635ee57f58fae51 *R/tabGBIF.R
 112a4706785429e6f445cd3f0bc045e2 *R/taxonRectification.R
-9cb0512750626a19a2ec21689871616e *build/vignette.rds
+ef1d70aea6ca14717caeb01887cdb281 *build/vignette.rds
 046ac2cfc584d3a3c5a1a00e8129a1b2 *data/myOccCiteObject.RData
 3f50d7f84a7fc970816d1a215cfcb3e2 *inst/CITATION
 610acdcb680e4637b2121c426f23bce4 *inst/doc/a_Simple.R
-4d0f1d6386d7e24f8341f7a405f42267 *inst/doc/a_Simple.Rmd
-6e0f5739581e5718aeea4b5968e4e80f *inst/doc/a_Simple.html
+b703aa4e12034c73cda9ec22302f6e93 *inst/doc/a_Simple.Rmd
+82189ef20a97a03a92d690baef67b055 *inst/doc/a_Simple.html
 e6ce857cb4caf974a9d9f16286f6a1e7 *inst/doc/b_Advanced.R
-2eb42d0ce15248860e9ef85cbada0d1e *inst/doc/b_Advanced.Rmd
-f22b254b913baad08112c3e878495b56 *inst/doc/b_Advanced.html
-191b1712420cca49e67367f3e0881ba0 *inst/extdata/0169441-210914110416597.zip
+956057c5abb715f1be9958781e362ed6 *inst/doc/b_Advanced.Rmd
+c91232b95d451eda5493af45a7859235 *inst/doc/b_Advanced.html
 bb03e2747cf359d9ed3f09f46ab5b54b *inst/extdata/Fish_12Tax_time_calibrated.tre
 191b1712420cca49e67367f3e0881ba0 *inst/extdata/Protea_cynaroides/0169441-210914110416597.zip
 fd3b996e20b9b49709a47876ccb0c759 *inst/extdata/Tetrapturus_angustirostris/0006577-190621201848488.zip
@@ -62,7 +61,7 @@ df81e852186d8801d1f4ce8aab8ae2ff *tests/testthat/test-GBIFtableCleanup.R
 84f21091014b9a0121ab1c16b5e3a41b *tests/testthat/test-getGBIFpoints.R
 3ef9d98c352a292cf2632c0634fc285c *tests/testthat/test-map.R
 3585c7d9bf1d209983b3e1eeae35e110 *tests/testthat/test-occCitation.R
-08fd48129109bf4443ee1bd2d744fac6 *tests/testthat/test-occCitePrint.R
+c85c5f1d963b99ef192204d846b20ce1 *tests/testthat/test-occCitePrint.R
 b7e5be88e7685ec6dfdc6816234e7a9e *tests/testthat/test-occSum.R
 d821b42a89b7135d6332adb4a2b9fb71 *tests/testthat/test-prevGBIFdownload.R
 cdc2181c4bb9954038f7e338170610a2 *tests/testthat/test-studyTaxonList.R
@@ -70,5 +69,5 @@ cdc2181c4bb9954038f7e338170610a2 *tests/testthat/test-studyTaxonList.R
 4cb6f5649340dabcdc582f80307eaa1c *tests/testthat/test-tabGBIF.R
 d3226c70fe628390266e82e8f59da962 *tests/testthat/test-tabulate.R
 bbfec1df6cffe61b759f4c43da380f57 *tests/testthat/test-taxonRectification.R
-4d0f1d6386d7e24f8341f7a405f42267 *vignettes/a_Simple.Rmd
-2eb42d0ce15248860e9ef85cbada0d1e *vignettes/b_Advanced.Rmd
+b703aa4e12034c73cda9ec22302f6e93 *vignettes/a_Simple.Rmd
+956057c5abb715f1be9958781e362ed6 *vignettes/b_Advanced.Rmd

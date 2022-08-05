@@ -33,7 +33,7 @@ tabulate.occResults <- function(x, sp.name) {
       mutate_if(is.factor, as.character) %>%
       mutate(name = sp.name)
   })
-  occTbls.bind <- bind_rows(occTbls.char)
+  occTbls.bind <- dplyr::bind_rows(occTbls.char)
   return(occTbls.bind)
 }
 
@@ -110,7 +110,7 @@ occCiteMap <- function(occCiteData,
   )
 
   # Error check input.
-  if (!class(occCiteData) == "occCiteData") {
+  if (!is(occCiteData, class2 = "occCiteData")) {
     warning("Input is not of class 'occCiteData'.\n")
     return(NULL)
   }
@@ -121,13 +121,11 @@ occCiteMap <- function(occCiteData,
   }
 
   d.res <- occCiteData@occResults
-  if (!"all" %in% species_map) d.res <- d.res[match(species_map, names(d.res))]
-
   sp.names <- stringr::str_extract(
     string = names(d.res),
     pattern = "(\\w+\\s\\w+)"
   )
-
+  if (!"all" %in% species_map) d.res <- d.res[match(species_map, sp.names)]
 
   if (!is.null(species_colors)) {
     if (length(species_colors) != length(sp.names)) {
@@ -529,24 +527,12 @@ plot.occCiteData <- function(x, ...) {
         lbls <- occ_strwrap(lbls)
         names(pct) <- lbls
         pct <- pct[pct > 1]
-        if (sum(pct) < 100) {
-          pct["Other*"] <- (100 - sum(pct))
-          source <- waffle::waffle(pct,
-            rows = 10,
-            colors = viridis::viridis(length(pct)),
-            title = paste0(sp, " Occurrence Records by Primary Data Source"),
-            xlab = "*Sources contributing <2% not shown."
-          )
-        } else {
-          source <- waffle::waffle(pct,
-            rows = 10,
-            colors = viridis::viridis(length(pct)),
-            title = paste0(
-              sp,
-              " Occurrence Records by Primary Data Source"
-            )
-          )
-        }
+        pct["Other*"] <- (100 - sum(pct))
+        source <- waffle::waffle(pct,
+          rows = 10,
+          colors = viridis::viridis(length(pct)),
+          title = paste0(sp, " Occurrence Records by Primary Data Source"),
+          xlab = "*Sources contributing <2% not shown.")
         source <- ggplot_build(source)
         if ("yearHistogram" %in% plotTypes) {
           allPlots[[2]] <- source

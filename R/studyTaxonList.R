@@ -2,20 +2,20 @@
 #'
 #' @description Takes input phylogenies or vectors of taxon names, checks
 #' against taxonomic database, returns vector of cleaned taxonomic names
-#' (using \code{\link{taxonRectification}}) for use in spocc queries, as
+#' (using \code{\link[taxize]{gnr_resolve}}) for use in spocc queries, as
 #' well as warnings if there are invalid names.
 #'
 #' @param x A phylogeny of class 'phylo' or a vector of class 'character'
 #' containing the names of taxa of interest
 #'
 #' @param datasources A vector of taxonomic data sources implemented in
-#' \code{\link{gnr_resolve}}. You can see the list using
+#' \code{\link[taxize]{gnr_resolve}}. You can see the list using
 #' \code{taxize::gnr_datasources()}.
 #'
 #' @return An object of class \code{\link{occCiteData}} containing the type
 #' of inquiry the user has made --a phylogeny or a vector of names-- and a
 #' data frame containing input taxa names, the closest match according to
-#' \code{\link{gnr_resolve}}, and a list of taxonomic data sources that
+#' \code{\link[taxize]{gnr_resolve}}, and a list of taxonomic data sources that
 #' contain the matching name.
 #'
 #' @examples

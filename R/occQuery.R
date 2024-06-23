@@ -2,7 +2,7 @@
 #'
 #' @description Takes rectified list of specimens from
 #' \code{\link{studyTaxonList}} and returns point data from
-#' \code{\link{rgbif}} with metadata.
+#' \code{\link[rgbif]{rgbif}} with metadata.
 #'
 #' @param x An object of class \code{\link{occCiteData}} (the results of
 #' a \code{\link{studyTaxonList}} search) OR a vector with a list of species
@@ -31,7 +31,7 @@
 #' GBIF account. Setting this option to `TRUE` can significantly speed up
 #' query time if the user has previously queried GBIF for the same taxa.
 #'
-#' @param options A vector of options to pass to \code{\link{occ_download}}.
+#' @param options A vector of options to pass to \code{\link[rgbif]{occ_download}}.
 #'
 #' @return The object of class \code{\link{occCiteData}} supplied by the user
 #' as an argument, with occurrence data search results, as well as metadata
@@ -53,12 +53,11 @@
 #'   loadLocalGBIFDownload = F
 #' )
 #'
-#' ## If you don't have a occCite object yet
+#' ## If you don't have an occCite object yet
 #' occQuery(
 #'   x = c("Buteo buteo", "Protea cynaroides"),
 #'   datasources = c("gbif", "bien"),
 #'   GBIFLogin = myLogin,
-#'   GBIFOverwrite = T,
 #'   GBIFDownloadDirectory = "./Desktop",
 #'   loadLocalGBIFDownload = F
 #' )
@@ -69,7 +68,6 @@
 #'   x = c("Buteo buteo", "Protea cynaroides"),
 #'   datasources = c("gbif", "bien"),
 #'   GBIFLogin = myLogin,
-#'   GBIFoverwrite = T,
 #'   GBIFDownloadDirectory = "./Desktop/GBIFDownloads",
 #'   loadLocalGBIFDownload = T
 #' )
@@ -181,7 +179,7 @@ occQuery <- function(x = NULL,
   }
 
   # Get time stamp for search
-  x@occCiteSearchDate <- as.character(Sys.Date(), format = "%Y-%m-%d")
+  x@occCiteSearchDate <- format(Sys.Date(), format = "%Y-%m-%d")
 
   # Occurrence queries for each species
   queryResults <- x

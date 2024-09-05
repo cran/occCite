@@ -1,7 +1,7 @@
 Package: occCite
 Type: Package
 Title: Querying and Managing Large Biodiversity Occurrence Datasets
-Version: 0.5.7
+Version: 0.5.8
 Authors@R: c(
   person(given = "Hannah L.", family = "Owens", ,"hannah.owens@gmail.com", role=c("aut","cre"),
     comment = c(ORCID = "0000-0003-0071-1745")),
@@ -30,14 +30,14 @@ LazyData: true
 Language: en-US
 Depends: R (>= 3.5.0)
 Suggests: rmarkdown, remotes, RefManageR, testthat, covr, ape, bit64,
-        knitr, httr
+        knitr, httr, taxize
 Imports: bib2df, BIEN, curl, dplyr, lubridate, methods, rgbif (>= 3.1),
-        taxize, stringr, stats, leaflet, htmltools, ggplot2, rlang,
-        tidyr, RPostgreSQL, RColorBrewer, viridis, DBI, waffle
+        stringr, stats, leaflet, htmltools, ggplot2, rlang, tidyr,
+        RPostgreSQL, RColorBrewer, viridis, DBI, waffle
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-06-23 14:34:28 UTC; HannahOwens
+Packaged: 2024-09-04 16:07:45 UTC; HannahOwens
 Author: Hannah L. Owens [aut, cre] (<https://orcid.org/0000-0003-0071-1745>),
   Cory Merow [aut] (<https://orcid.org/0000-0003-0561-053X>),
   Brian Maitner [aut] (<https://orcid.org/0000-0002-2118-9880>),
@@ -48,4 +48,4 @@ Author: Hannah L. Owens [aut, cre] (<https://orcid.org/0000-0003-0071-1745>),
     reviewed the package (v. 0.5.2) for rOpenSci, see
     <https://github.com/ropensci/software-review/issues/407>)
 Repository: CRAN
-Date/Publication: 2024-06-23 15:20:02 UTC
+Date/Publication: 2024-09-05 09:30:02 UTC

@@ -1,6 +1,6 @@
-bb04e14ada3e88ad0a642c7c4417c5b9 *DESCRIPTION
+ea8c3d95f7343c53d37c6f9edb10f2f0 *DESCRIPTION
 b7c538bb6d1644f65b19886b8108acb8 *NAMESPACE
-3d57584d2b44f07cae3b4a8e08455ed1 *NEWS.md
+bb0c810994aee402a912222fa63cb0fc *NEWS.md
 00add7bf4c094bfb752abda315e5465c *R/GBIFLogin.R
 7179c9a69efca5991f0525659829358c *R/GBIFLoginManager.R
 bfb8ce84f339184983bf881df62d03ff *R/GBIFtableCleanup.R
@@ -18,16 +18,16 @@ e4ac12312c17193b6a55adc84b93c6a2 *R/occSum.R
 73ed6d246f3262718fa0f7d308879f04 *R/prevGBIFdownload.R
 17a87bd538ef26de0c5674c6431e175c *R/studyTaxonList.R
 bd6498d9a88f77f3bf0fe45ad5cb2903 *R/tabGBIF.R
-ba1d1df663b944da901f0fdac86ed40e *R/taxonRectification.R
-16a9f4a095691b43f04620e7caf588c2 *build/vignette.rds
+8fb6cdac6906c4fe84c5220ae92e246f *R/taxonRectification.R
+0b1ec1d3e0295d011f80807522b8114b *build/vignette.rds
 527605cac242df997de3a3b44f7f7ec6 *data/myOccCiteObject.rda
 e5e96359da4787c65707eea1ce92c56c *inst/CITATION
 610acdcb680e4637b2121c426f23bce4 *inst/doc/a_Simple.R
 b703aa4e12034c73cda9ec22302f6e93 *inst/doc/a_Simple.Rmd
-4403e49ffa327e0fe4baac9e1865ca3f *inst/doc/a_Simple.html
+1981eab1ef446a7ccfa35755b421e829 *inst/doc/a_Simple.html
 e6ce857cb4caf974a9d9f16286f6a1e7 *inst/doc/b_Advanced.R
 956057c5abb715f1be9958781e362ed6 *inst/doc/b_Advanced.Rmd
-181967dd95cbd9fa43ebf2496bcaf130 *inst/doc/b_Advanced.html
+0dd798082e946ab325fd8089627debdf *inst/doc/b_Advanced.html
 bb03e2747cf359d9ed3f09f46ab5b54b *inst/extdata/Fish_12Tax_time_calibrated.tre
 191b1712420cca49e67367f3e0881ba0 *inst/extdata/Protea_cynaroides/0169441-210914110416597.zip
 fd3b996e20b9b49709a47876ccb0c759 *inst/extdata/Tetrapturus_angustirostris/0006577-190621201848488.zip
@@ -52,7 +52,7 @@ e2a02d7e59e9b5d93872391463c69aaf *man/plot.occCiteData.Rd
 5bb996957ceb5f16711fb386ded0659a *man/print.occCiteCitation.Rd
 4f05dc6c1e2cdce19adb4ab5cb8cccb4 *man/studyTaxonList.Rd
 c96302783565937df47315797ee84998 *man/summary.occCiteData.Rd
-9ba54d700e86e235c8b80ba56e90db4d *man/taxonRectification.Rd
+6524d812221d5f946e5f4dfca0908593 *man/taxonRectification.Rd
 43fdfa9a0f51cc2a35959b0f314a2111 *tests/testthat.R
 c392c521b7c1e16d9ad21030c84d29b7 *tests/testthat/test-GBIFLoginManager.R
 1af16fcf26c5970b07d17e43933815bc *tests/testthat/test-GBIFtableCleanup.R
@@ -68,6 +68,6 @@ cdc2181c4bb9954038f7e338170610a2 *tests/testthat/test-studyTaxonList.R
 a263adf6e12eea7b2acceb3ac0f92b1d *tests/testthat/test-sumFig.R
 35500ae9c909b1fb1bd4aa68a4c21851 *tests/testthat/test-tabGBIF.R
 5ec51bcf9f52308924da1f27c970c500 *tests/testthat/test-tabulate.R
-bbfec1df6cffe61b759f4c43da380f57 *tests/testthat/test-taxonRectification.R
+9c5c9658034281ebdcf6452a81d5ec1c *tests/testthat/test-taxonRectification.R
 b703aa4e12034c73cda9ec22302f6e93 *vignettes/a_Simple.Rmd
 956057c5abb715f1be9958781e362ed6 *vignettes/b_Advanced.Rmd

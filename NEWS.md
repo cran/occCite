@@ -1,3 +1,7 @@
+# occCite 0.5.9
+
+* Commented out dependencies on `taxize` package. Taxonomic rectification no longer works. It will be reinstated if taxize becomes available on CRAN.
+
 # occCite 0.5.8
 
 * Moved `taxize` package to `Suggests`, as it is now orphaned.

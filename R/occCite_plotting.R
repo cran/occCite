@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' data(myOccCiteObject)
-#' tabulate.occResults(myOccCiteObject@occResults,
+#' tabulate.occResults(myOccCiteObject@occResults$`Protea cynaroides (L.) L.`,
 #'   sp.name = "Protea cynaroides"
 #' )
 #' @importFrom dplyr "%>%" mutate_if mutate bind_rows
@@ -342,10 +342,10 @@ occCiteMap <- function(occCiteData,
 #' @importFrom stats complete.cases
 #' @importFrom methods is
 #' @importFrom viridis viridis
+#' @importFrom utils packageVersion
 #'
 #' @method plot occCiteData
 #' @export
-#'
 plot.occCiteData <- function(x, ...) {
   # Function to wrap labels
   occ_strwrap <- function(x) {
@@ -491,6 +491,11 @@ plot.occCiteData <- function(x, ...) {
       aggregator <- ggplot_build(aggregator)
       allPlots[[length(allPlots)]] <- aggregator
     }
+    if(packageVersion("ggplot2") >= "3.5.2.9001"){
+      allPlots <- lapply(allPlots, FUN = function(p) p@plot) # Gets plot
+    } else{
+      allPlots <- lapply(allPlots, FUN = function(p) p$plot)
+    }
     names(allPlots) <- plotTypes
     return(allPlots)
   } else {
@@ -560,6 +565,11 @@ plot.occCiteData <- function(x, ...) {
         )
         aggregator <- ggplot_build(aggregator)
         allPlots[[length(allPlots)]] <- aggregator
+      }
+      if(packageVersion("ggplot2") >= "3.5.2.9001"){
+        allPlots <- lapply(allPlots, FUN = function(p) p@plot) # Gets plot
+      } else{
+        allPlots <- lapply(allPlots, FUN = function(p) p$plot)
       }
       names(allPlots) <- plotTypes
       spPlotList[[match(sp, spList)]] <- allPlots

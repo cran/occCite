@@ -5,13 +5,13 @@ knitr::opts_chunk$set(echo = TRUE, error = TRUE)
 knitr::opts_knit$set(root.dir = system.file('extdata/', package='occCite'))
 
 ## ----simple_search, eval=F----------------------------------------------------
-#  # Simple search
-#  myOldOccCiteObject <- occQuery(x = "Protea cynaroides",
-#                                    datasources = c("gbif", "bien"),
-#                                    GBIFLogin = GBIFLogin,
-#                                    GBIFDownloadDirectory =
-#                                      system.file('extdata/', package='occCite'),
-#                                    checkPreviousGBIFDownload = T)
+# # Simple search
+# myOldOccCiteObject <- occQuery(x = "Protea cynaroides",
+#                                   datasources = c("gbif", "bien"),
+#                                   GBIFLogin = GBIFLogin,
+#                                   GBIFDownloadDirectory =
+#                                     system.file('extdata/', package='occCite'),
+#                                   checkPreviousGBIFDownload = T)
 
 ## ----simple_search sssssecret cooking show, eval=T, echo = F------------------
 # Simple search

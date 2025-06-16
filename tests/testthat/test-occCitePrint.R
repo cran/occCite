@@ -1,11 +1,16 @@
 library(occCite)
 library(ape)
 
-test_that("is occCitePrint working?", {
-  data(myOccCiteObject)
-  mySimpleOccCiteObject <- myOccCiteObject
-  myOccCitations <- occCitation(mySimpleOccCiteObject)
-  test_that("regular print", {expect_output(print(myOccCitations))})
+data(myOccCiteObject)
+mySimpleOccCiteObject <- myOccCiteObject
+myOccCitations <- occCitation(mySimpleOccCiteObject)
 
-  test_that("print by species", {expect_output(print(myOccCitations, bySpecies = TRUE))})
+test_that("regular print", {
+  output <- capture.output(print(myOccCitations))
+  expect_equal(class(output), "character")
+})
+
+test_that("print by species", {
+  output <- capture.output(print(myOccCitations, bySpecies = TRUE))
+  expect_equal(class(output), "character")
 })

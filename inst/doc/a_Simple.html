@@ -17,7 +17,7 @@
 <meta name="author" content="Vijay Barve" />
 <meta name="author" content="Robert Guralnick" />
 
-<meta name="date" content="2024-10-28" />
+<meta name="date" content="2025-06-16" />
 
 <title>Simple search and citation of occurrences</title>
 
@@ -55,8 +55,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -67,7 +68,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -351,7 +352,7 @@ occurrences</h1>
 <h4 class="author">Jamie M. Kass</h4>
 <h4 class="author">Vijay Barve</h4>
 <h4 class="author">Robert Guralnick</h4>
-<h4 class="date">2024-10-28</h4>
+<h4 class="date">2025-06-16</h4>
 
 
 <div id="TOC">
@@ -529,28 +530,28 @@ the results of <code>occCitation()</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">print</span>(mySimpleOccCitations)</span></code></pre></div>
 <pre><code>## Writing 5 Bibtex entries ... OK
 ## Results written to file &#39;temp.bib&#39;</code></pre>
-<pre><code>## AFFOUARD A, JOLY A, LOMBARDO J, CHAMP J, GOEAU H, CHOUET M, GRESSE H, BONNET P (2023). Pl@ntNet observations. Version 1.8. Pl@ntNet. https://doi.org/10.15468/gtebaa. Accessed via GBIF on 2022-03-02.
+<pre><code>## AFFOUARD A, JOLY A, LOMBARDO J, CHAMP J, GOEAU H, CHOUET M, GRESSE H, BONNET P (2025). Pl@ntNet observations. Version 1.9. Pl@ntNet. https://doi.org/10.15468/gtebaa. Accessed via GBIF on 2022-03-02.
 ## AFFOUARD A, JOLY A, LOMBARDO J, CHAMP J, GOEAU H, CHOUET M, GRESSE H, BOTELLA C, BONNET P (2023). Pl@ntNet automatically identified occurrences. Version 1.8. Pl@ntNet. https://doi.org/10.15468/mma2ec. Accessed via GBIF on 2022-03-02.
-## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2024). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.8.1. https://CRAN.R-project.org/package = rgbif.
+## Chamberlain, S., Barve, V., Mcglinn, D., Oldoni, D., Desmet, P., Geffert, L., Ram, K. (2025). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 3.8.1. https://CRAN.R-project.org/package = rgbif.
 ## Chamberlain, S., Boettiger, C. (2017). R Python, and Ruby clients for GBIF species occurrence data. PeerJ PrePrints.
 ## Fatima Parker-Allie, Ranwashe F (2018). PRECIS. South African National Biodiversity Institute. https://doi.org/10.15468/rckmn2. Accessed via GBIF on 2022-03-02.
-## MNHN, Chagnoux S (2024). The vascular plants collection (P) at the Herbarium of the Muséum national d&#39;Histoire Naturelle (MNHN - Paris). Version 69.384. MNHN - Museum national d&#39;Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2022-03-02.
+## MNHN, Chagnoux S (2025). The vascular plants collection (P) at the Herbarium of the Muséum national d&#39;Histoire Naturelle (MNHN - Paris). Version 69.416. MNHN - Museum national d&#39;Histoire naturelle. https://doi.org/10.15468/nc6rxy. Accessed via GBIF on 2022-03-02.
 ## MNHN. Accessed via BIEN on NA.
-## Maitner, B. (2023). . R package version 1.2.6. https://CRAN.R-project.org/package = BIEN.
+## Maitner, B. (2025). . R package version 1.2.7. https://CRAN.R-project.org/package = BIEN.
 ## Missouri Botanical Garden,Herbarium. Accessed via BIEN on NA.
-## Observation.org (2024). Observation.org, Nature data from around the World. https://doi.org/10.15468/5nilie. Accessed via GBIF on 2022-03-02.
-## Owens, H., Merow, C., Maitner, B., Kass, J., Barve, V., Guralnick, R. (2024). occCite: Querying and Managing Large Biodiversity Occurrence Datasets. R package version 0.5.9. https://CRAN.R-project.org/package = occCite.
-## Ranwashe F (2024). Botanical Database of Southern Africa (BODATSA): Botanical Collections. Version 1.25. South African National Biodiversity Institute. https://doi.org/10.15468/2aki0q. Accessed via GBIF on 2022-03-02.
+## Observation.org (2025). Observation.org, Nature data from around the World. https://doi.org/10.15468/5nilie. Accessed via GBIF on 2022-03-02.
+## Owens, H., Merow, C., Maitner, B., Kass, J., Barve, V., Guralnick, R. (2025). occCite: Querying and Managing Large Biodiversity Occurrence Datasets. R package version 0.6.0. https://CRAN.R-project.org/package = occCite.
+## Ranwashe F (2025). Botanical Database of Southern Africa (BODATSA): Botanical Collections. Version 1.27. South African National Biodiversity Institute. https://doi.org/10.15468/2aki0q. Accessed via GBIF on 2022-03-02.
 ## Rob Cubey (2022). Royal Botanic Garden Edinburgh Living Plant Collections (E). Royal Botanic Garden Edinburgh. https://doi.org/10.15468/bkzv1l. Accessed via GBIF on 2022-03-02.
 ## SANBI. Accessed via BIEN on NA.
 ## Senckenberg (2020). African Plants - a photo guide. https://doi.org/10.15468/r9azth. Accessed via GBIF on 2022-03-02.
 ## Taylor S (2019). G. S. Torrey Herbarium at the University of Connecticut (CONN). University of Connecticut. https://doi.org/10.15468/w35jmd. Accessed via GBIF on 2022-03-02.
 ## Team}, {.C. (2024). R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
-## Teisher J, Stimmel H (2024). Tropicos MO Specimen Data. Missouri Botanical Garden. https://doi.org/10.15468/hja69f. Accessed via GBIF on 2022-03-02.
+## Teisher J, Stimmel H (2025). Tropicos MO Specimen Data. Missouri Botanical Garden. https://doi.org/10.15468/hja69f. Accessed via GBIF on 2022-03-02.
 ## Tela Botanica. Carnet en Ligne. https://doi.org/10.15468/rydcn2. Accessed via GBIF on 2022-03-02.
 ## UConn. Accessed via BIEN on NA.
-## iNaturalist contributors, iNaturalist (2024). iNaturalist Research-grade Observations. iNaturalist.org. https://doi.org/10.15468/ab3s5x. Accessed via GBIF on 2022-03-02.
-## naturgucker.de. naturgucker. https://doi.org/10.15468/uc1apo. Accessed via GBIF on 2022-03-02.</code></pre>
+## iNaturalist contributors, iNaturalist (2025). iNaturalist Research-grade Observations. iNaturalist.org. https://doi.org/10.15468/ab3s5x. Accessed via GBIF on 2022-03-02.
+## naturgucker.de. NABU|naturgucker. https://doi.org/10.15468/uc1apo. Accessed via GBIF on 2022-03-02.</code></pre>
 </div>
 <div id="simple-taxonomic-rectification" class="section level2">
 <h2>Simple Taxonomic Rectification</h2>

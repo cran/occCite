@@ -1,6 +1,6 @@
-622644371f2ab3d5c63291b0135680a8 *DESCRIPTION
+b0179f920c5a71c8691010d5313f37ed *DESCRIPTION
 58294f16a2236a966f0071082a71475d *NAMESPACE
-d33813a9a676e2fb320ee11172203ce8 *NEWS.md
+fbf634bdb7a508420907b4bf417376b4 *NEWS.md
 00add7bf4c094bfb752abda315e5465c *R/GBIFLogin.R
 7179c9a69efca5991f0525659829358c *R/GBIFLoginManager.R
 bfb8ce84f339184983bf881df62d03ff *R/GBIFtableCleanup.R
@@ -12,11 +12,11 @@ e29fb3bef47dc655e384e17daf4f8c74 *R/occCitation.R
 341cb7efb252a71c739901b37c48c7f3 *R/occCiteCitation.R
 0db17369e0d4e403637773b5d24ff9e8 *R/occCiteData.R
 664eb6293a94a416b71c176a99d02aea *R/occCitePrint.R
-1e77857b869b5f3df3b9c7be4c551b56 *R/occCite_plotting.R
+3bda0810a3c87a6ac8dc5f41506efc01 *R/occCite_plotting.R
 73acca1295b81ff6e0a6dd684ea51314 *R/occQuery.R
 e4ac12312c17193b6a55adc84b93c6a2 *R/occSum.R
 73ed6d246f3262718fa0f7d308879f04 *R/prevGBIFdownload.R
-73210e16876454a88d20ece1e3a19bd7 *R/studyTaxonList.R
+e8d61f433a8b67967eddfd2a418d30b7 *R/studyTaxonList.R
 bd6498d9a88f77f3bf0fe45ad5cb2903 *R/tabGBIF.R
 bdc35c3ba79108f2cd467449bd81d9cc *R/taxonRectification.R
 0b1ec1d3e0295d011f80807522b8114b *build/vignette.rds
@@ -24,10 +24,10 @@ bdc35c3ba79108f2cd467449bd81d9cc *R/taxonRectification.R
 3f50d7f84a7fc970816d1a215cfcb3e2 *inst/CITATION
 900f5ca0666830aba336266f50ff395c *inst/doc/a_Simple.R
 775a297542a828fd873092ff0c4747d4 *inst/doc/a_Simple.Rmd
-fdb72f492434f85feb2d31d19702beef *inst/doc/a_Simple.html
+5c88c5b8513f265e7bee9b4f34be407e *inst/doc/a_Simple.html
 1a45a3339e817021eb3623c7e30601c8 *inst/doc/b_Advanced.R
 956057c5abb715f1be9958781e362ed6 *inst/doc/b_Advanced.Rmd
-d20f33bcda95aed57168edcc28b2f27c *inst/doc/b_Advanced.html
+281c6ba9828f9cb0dfbc6a9ded2885ed *inst/doc/b_Advanced.html
 191b1712420cca49e67367f3e0881ba0 *inst/extdata/0169441-210914110416597.zip
 bb03e2747cf359d9ed3f09f46ab5b54b *inst/extdata/Fish_12Tax_time_calibrated.tre
 191b1712420cca49e67367f3e0881ba0 *inst/extdata/Protea_cynaroides/0169441-210914110416597.zip
@@ -66,7 +66,7 @@ d504d65a2fdc23fad8fe89d72224f544 *tests/testthat/test-occCitation.R
 299ad71567dfa314256059bb632f1225 *tests/testthat/test-occSum.R
 cf5d0453ead4c430c8083739d66eff84 *tests/testthat/test-prevGBIFdownload.R
 e75ec230c07ed6f8ac11bfc6e7014b18 *tests/testthat/test-studyTaxonList.R
-996c2cd7a66f45c0832066c2d9fe6ae7 *tests/testthat/test-sumFig.R
+9a5ab675a4001c372dbb67ee21b4584f *tests/testthat/test-sumFig.R
 35500ae9c909b1fb1bd4aa68a4c21851 *tests/testthat/test-tabGBIF.R
 5ec51bcf9f52308924da1f27c970c500 *tests/testthat/test-tabulate.R
 7c3e45a9243fb565f7717a8021c85163 *tests/testthat/test-taxonRectification.R
